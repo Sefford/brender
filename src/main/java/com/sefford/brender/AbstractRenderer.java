@@ -25,23 +25,24 @@ import com.sefford.brender.interfaces.Renderer;
  * getView() logic by delegating it to the object itself.
  * <p/>
  * This comes in handy for adapters which have to allow different views to be rendered in the same adapter.
+ * <p/>
+ * This class is a template to start their new Renderer hierarchy
  *
  * @author Saul Diaz<sefford@gmail.com>
  */
-public abstract class AbstractRenderer<T> implements Renderer<T> {
+public abstract class AbstractRenderer<T extends Object> implements Renderer<T> {
 
 
     /**
      * ID of the Renderer.
      * <p/>
-     * In order for it to be used seamlessly, it is good
-     * that this ID is actually the ID of the Layout; in this way, we can compare
-     * if two renderers are compatible if they have the same Layout ID, and directly
-     * inflate the view from the Renderer ID.
+     * This ID is supposed to be a valid R.layout.id of Android.
+     *
+     * @see com.sefford.brender.interfaces.Renderable
      */
     protected final int id;
     /**
-     * Bus manager to notify events to the UI
+     * Postable interface to notify events to the UI
      */
     protected final Postable postable;
 
@@ -49,13 +50,12 @@ public abstract class AbstractRenderer<T> implements Renderer<T> {
      * Creates a new instance of a Renderer
      *
      * @param id       Building ID of the renderer
-     * @param postable Bus Manager to notify the event to the UI
+     * @param postable Postable interface to notify events to the UI
      */
     public AbstractRenderer(int id, Postable postable) {
         this.id = id;
         this.postable = postable;
     }
-
 
     /**
      * Unique ID of the Renderer

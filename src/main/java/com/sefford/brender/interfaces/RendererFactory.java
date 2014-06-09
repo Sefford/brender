@@ -16,24 +16,18 @@
 package com.sefford.brender.interfaces;
 
 /**
- * Renderable interface will allow objects to provide Renderers IDs.
- * <p/>
- * While other implementations are more loose, Brender default behavior enforces that this ID must be an unique
- * layout identifier.
- * <p/>
- * By doing so we gain some advantages like a straightforward comparison of compatible Renderers,
- * where several objects can be rendered with the same layout ID, thus reducing the code base for Renderer classes.
- * <p/>
- * If you want to Render unrelated elements, a good tip is to target a common Interface for the Renderer.
+ * Abstraction for the Renderer Factory Interface
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
-public interface Renderable {
-
+public interface RendererFactory<T extends Object> {
     /**
-     * Gets the Renderer ID of the Renderable.
+     * Creates a new Renderer Instance.
      *
-     * @return ID of the Renderable
+     * @param id       ID of the Renderer to instantiate
+     * @param postable Postable Interface to send events to the UI
+     * @param extras   Extra configuration object
+     * @return An initialized instance of a Renderer
      */
-    int getRenderableId();
+    Renderer getRenderer(int id, Postable postable, T extras);
 }

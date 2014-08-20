@@ -15,11 +15,11 @@
  */
 package com.sefford.brender.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
@@ -47,14 +47,6 @@ public class RendererAdapter extends BaseAdapter {
      */
     protected final Postable postable;
     /**
-     * Context to provide different Android services
-     */
-    protected final Context context;
-    /**
-     * Inflater to build the views
-     */
-    protected final LayoutInflater inflater;
-    /**
      * Extras item
      */
     protected final Object extras;
@@ -62,20 +54,17 @@ public class RendererAdapter extends BaseAdapter {
     /**
      * Creates a new instance of the RendererAdapter
      *
-     * @param context  Activity context
      * @param data     Adapter data
      * @param builder  Builder to instantiate the renderers
      * @param postable Bus to notify the UI of events on the renderers
      * @param extras   Extra configuration for the renderer
      */
-    public RendererAdapter(Context context, List<Renderable> data, RendererBuilder builder, Postable postable, Object extras) {
+    public RendererAdapter(List<Renderable> data, RendererBuilder builder, Postable postable, Object extras) {
         super();
         this.data = data;
         this.builder = builder;
         this.postable = postable;
-        this.context = context;
         this.extras = extras;
-        this.inflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -99,13 +88,13 @@ public class RendererAdapter extends BaseAdapter {
         convertView = builder.instantiate(renderable.getRenderableId())
                 .into(convertView)
                 .inside(parent)
-                .using(inflater)
+                .using(LayoutInflater.from(parent.getContext()))
                 .interactingWith(postable)
                 .addingConfiguratior(extras)
                 .create();
         final Renderer rendererInterface = (Renderer) convertView.getTag();
         rendererInterface.hookUpListeners(convertView, renderable);
-        rendererInterface.render(context, renderable, position, position == 0, position == getCount() - 1);
+        rendererInterface.render(parent.getContext(), renderable, position, position == 0, position == getCount() - 1);
         return convertView;
     }
 }

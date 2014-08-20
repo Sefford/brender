@@ -4,10 +4,12 @@ package com.sefford.brender.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.sefford.brender.builder.Builder;
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +22,11 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
@@ -46,6 +52,8 @@ public class RendererAdapterTest {
     RenderableTest renderable;
     @Mock
     Object extras;
+    @Mock
+    ViewGroup parent;
 
     @Before
     public void setUp() throws Exception {
@@ -59,9 +67,10 @@ public class RendererAdapterTest {
         when(builder.addingConfiguratior(extras)).thenReturn(builder);
         when(builder.create()).thenReturn(view);
         when(view.getTag()).thenReturn(rendererInterface);
+        when(parent.getContext()).thenReturn(Robolectric.application);
         renderableList = new ArrayList<Renderable>();
         renderableList.add(renderable);
-        adapter = new RendererAdapter(Robolectric.application, renderableList, builder, bus, extras);
+        adapter = new RendererAdapter(renderableList, builder, bus, extras);
     }
 
     @Test
@@ -81,7 +90,7 @@ public class RendererAdapterTest {
 
     @Test
     public void testGetViewOnlyOne() throws Exception {
-        adapter.getView(0, null, null);
+        adapter.getView(0, null, parent);
         verify(builder, times(1)).create();
         verify(rendererInterface, times(1)).hookUpListeners(view, renderable);
         verify(rendererInterface, times(1)).render(Robolectric.application, renderable, 0, true, true);
@@ -93,7 +102,7 @@ public class RendererAdapterTest {
         renderableList.add(renderable);
         renderableList.add(renderable);
         renderableList.add(renderable);
-        adapter.getView(3, null, null);
+        adapter.getView(3, null, parent);
         verify(builder, times(1)).create();
         verify(rendererInterface, times(1)).hookUpListeners(view, renderable);
         verify(rendererInterface, times(1)).render(Robolectric.application, renderable, 3, false, false);

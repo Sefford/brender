@@ -85,16 +85,20 @@ public class RendererAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final Renderable renderable = getItem(position);
-        convertView = builder.instantiate(renderable.getRenderableId())
+        convertView = configureRenderer(convertView, parent, renderable.getRenderableId());
+        final Renderer rendererInterface = (Renderer) convertView.getTag();
+        rendererInterface.hookUpListeners(convertView, renderable);
+        rendererInterface.render(parent.getContext(), renderable, position, position == 0, position == getCount() - 1);
+        return convertView;
+    }
+
+    protected View configureRenderer(View convertView, ViewGroup parent, int renderableId) {
+        return builder.instantiate(renderableId)
                 .into(convertView)
                 .inside(parent)
                 .using(LayoutInflater.from(parent.getContext()))
                 .interactingWith(postable)
                 .addingConfiguratior(extras)
                 .create();
-        final Renderer rendererInterface = (Renderer) convertView.getTag();
-        rendererInterface.hookUpListeners(convertView, renderable);
-        rendererInterface.render(parent.getContext(), renderable, position, position == 0, position == getCount() - 1);
-        return convertView;
     }
 }

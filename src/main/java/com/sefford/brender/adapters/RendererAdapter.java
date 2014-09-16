@@ -19,25 +19,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import com.sefford.brender.filters.NullFilter;
+import com.sefford.brender.interfaces.AdapterData;
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererBuilder;
-
-import java.util.List;
 
 /**
  * Renderable adapter to mix several Renderable types.
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
-public class RendererAdapter extends BaseAdapter {
+public class RendererAdapter extends BaseAdapter implements Filterable {
 
     /**
      * Adapter data
      */
-    protected final List<Renderable> data;
+    protected final AdapterData data;
     /**
      * Builder to instantiate the Renderers
      */
@@ -59,7 +61,7 @@ public class RendererAdapter extends BaseAdapter {
      * @param postable Bus to notify the UI of events on the renderers
      * @param extras   Extra configuration for the renderer
      */
-    public RendererAdapter(List<Renderable> data, RendererBuilder builder, Postable postable, Object extras) {
+    public RendererAdapter(AdapterData data, RendererBuilder builder, Postable postable, Object extras) {
         super();
         this.data = data;
         this.builder = builder;
@@ -74,12 +76,12 @@ public class RendererAdapter extends BaseAdapter {
 
     @Override
     public Renderable getItem(int position) {
-        return data.get(position);
+        return data.getItem(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return data.getItemId(position);
     }
 
     @Override
@@ -100,5 +102,13 @@ public class RendererAdapter extends BaseAdapter {
                 .interactingWith(postable)
                 .addingConfiguratior(extras)
                 .create();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (data instanceof Filter) {
+            return data.getFilter();
+        }
+        return new NullFilter();
     }
 }

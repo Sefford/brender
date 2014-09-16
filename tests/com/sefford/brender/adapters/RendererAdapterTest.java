@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sefford.brender.builder.Builder;
+import com.sefford.brender.filters.DefaultAdapterData;
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
@@ -37,9 +38,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(RobolectricTestRunner.class)
 public class RendererAdapterTest {
 
-    private static final int EXPECTED_COUNT = 1;
-    RendererAdapter adapter;
-    List<Renderable> renderableList;
+    private static final int EXPECTED_COUNT = 3;
     @Mock
     Postable bus;
     @Mock
@@ -55,6 +54,10 @@ public class RendererAdapterTest {
     @Mock
     ViewGroup parent;
 
+    DefaultAdapterData data;
+    List<Renderable> renderableList;
+    RendererAdapter adapter;
+
     @Before
     public void setUp() throws Exception {
         initMocks(this);
@@ -68,9 +71,13 @@ public class RendererAdapterTest {
         when(builder.create()).thenReturn(view);
         when(view.getTag()).thenReturn(rendererInterface);
         when(parent.getContext()).thenReturn(Robolectric.application);
+
         renderableList = new ArrayList<Renderable>();
         renderableList.add(renderable);
-        adapter = new RendererAdapter(renderableList, builder, bus, extras);
+        renderableList.add(renderable);
+        renderableList.add(renderable);
+        data = new DefaultAdapterData(renderableList);
+        adapter = new RendererAdapter(data, builder, bus, extras);
     }
 
     @Test
@@ -90,6 +97,10 @@ public class RendererAdapterTest {
 
     @Test
     public void testGetViewOnlyOne() throws Exception {
+        renderableList = new ArrayList<Renderable>();
+        renderableList.add(renderable);
+        data = new DefaultAdapterData(renderableList);
+        adapter = new RendererAdapter(data, builder, bus, extras);
         adapter.getView(0, null, parent);
         verify(builder, times(1)).create();
         verify(rendererInterface, times(1)).hookUpListeners(view, renderable);

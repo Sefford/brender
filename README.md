@@ -8,7 +8,7 @@ Download
 
 ### Bundle
 
-Brender comes bundled in `aar` format. Grab the latest bundle from [here](http://search.maven.org/remotecontent?filepath=com/sefford/brender/1.0/brender-1.0.aar)
+Brender comes bundled in `aar` format. Grab the latest bundle from [here](http://search.maven.org/remotecontent?filepath=com/sefford/brender/1.0.3/brender-1.0.3.aar)
 
 ### Maven
 
@@ -16,7 +16,7 @@ Brender comes bundled in `aar` format. Grab the latest bundle from [here](http:/
 <dependency>
     <groupId>com.sefford</groupId>
     <artifactId>brender</artifactId>
-    <version>1.0</version>
+    <version>1.0.3</version>
     <type>aar</type>
 </dependency>
 ```
@@ -24,7 +24,7 @@ Brender comes bundled in `aar` format. Grab the latest bundle from [here](http:/
 ### Gradle 
 
 ```groovy
-compile 'com.sefford:brender:1.0@aar'
+compile 'com.sefford:brender:1.0.3@aar'
 ```
 
 Why Renderers?

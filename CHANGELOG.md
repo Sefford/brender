@@ -1,5 +1,9 @@
 Changelog
 =========
+## Brender 1.0.3
+_2014-09-16_
+
+* Added Filtering capabilities to the RendererAdapter 
 
 ## Brender 1.0.2
 _2014-09-01_

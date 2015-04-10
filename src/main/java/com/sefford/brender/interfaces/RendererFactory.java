@@ -15,19 +15,21 @@
  */
 package com.sefford.brender.interfaces;
 
+import android.view.View;
+
 /**
  * Abstraction for the Renderer Factory Interface
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
-public interface RendererFactory<T extends Object> {
+public interface RendererFactory {
     /**
      * Creates a new Renderer Instance.
      *
      * @param id       ID of the Renderer to instantiate
      * @param postable Postable Interface to send events to the UI
-     * @param extras   Extra configuration object
+     * @param view     View to initialize the Renderer
      * @return An initialized instance of a Renderer
      */
-    Renderer getRenderer(int id, Postable postable, T extras);
+    Renderer getRenderer(int id, Postable postable, View view);
 }

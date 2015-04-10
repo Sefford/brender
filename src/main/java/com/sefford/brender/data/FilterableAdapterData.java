@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.sefford.brender.filters;
+package com.sefford.brender.data;
 
 import android.widget.Filter;
 

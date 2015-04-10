@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Saúl Díaz
+ * Copyright (C) 2015 Saúl Díaz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.sefford.brender.filters;
+package com.sefford.brender.data;
 
 import android.widget.Filter;
-
+import com.sefford.brender.filters.NullFilter;
 import com.sefford.brender.interfaces.AdapterData;
 import com.sefford.brender.interfaces.Renderable;
 
 import java.util.List;
 
 /**
- * Adapter Data which does not filter data.
+ * Adapter for {@link com.sefford.brender.adapters.RecyclerRendererAdapter RecyclerRendererAdapter}. Does not filter
+ * and does not provide any extras.
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
-public final class DefaultAdapterData implements AdapterData {
+public class RecyclerAdapterData implements AdapterData {
 
     /**
      * Master data of the adapter
@@ -40,7 +40,7 @@ public final class DefaultAdapterData implements AdapterData {
      *
      * @param master External data
      */
-    public DefaultAdapterData(List<Renderable> master) {
+    public RecyclerAdapterData(List<Renderable> master) {
         this.master = master;
     }
 
@@ -51,7 +51,7 @@ public final class DefaultAdapterData implements AdapterData {
 
     @Override
     public long getItemId(int pos) {
-        return pos;
+        return master.get(pos).getRenderableId();
     }
 
     @Override

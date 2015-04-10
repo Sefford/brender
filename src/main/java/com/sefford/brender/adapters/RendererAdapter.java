@@ -15,19 +15,15 @@
  */
 package com.sefford.brender.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-
 import com.sefford.brender.filters.NullFilter;
-import com.sefford.brender.interfaces.AdapterData;
-import com.sefford.brender.interfaces.Postable;
-import com.sefford.brender.interfaces.Renderable;
-import com.sefford.brender.interfaces.Renderer;
-import com.sefford.brender.interfaces.RendererBuilder;
+import com.sefford.brender.interfaces.*;
 
 /**
  * Renderable adapter to mix several Renderable types.
@@ -43,30 +39,24 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
     /**
      * Builder to instantiate the Renderers
      */
-    protected final RendererBuilder builder;
+    protected final RendererFactory factory;
     /**
      * Bus to notify the UI of events on the renderers
      */
     protected final Postable postable;
-    /**
-     * Extras item
-     */
-    protected final Object extras;
 
     /**
      * Creates a new instance of the RendererAdapter
      *
      * @param data     Adapter data
-     * @param builder  Builder to instantiate the renderers
+     * @param factory  Builder to instantiate the renderers
      * @param postable Bus to notify the UI of events on the renderers
-     * @param extras   Extra configuration for the renderer
      */
-    public RendererAdapter(AdapterData data, RendererBuilder builder, Postable postable, Object extras) {
+    public RendererAdapter(AdapterData data, RendererFactory factory, Postable postable) {
         super();
         this.data = data;
-        this.builder = builder;
+        this.factory = factory;
         this.postable = postable;
-        this.extras = extras;
     }
 
     @Override
@@ -89,26 +79,64 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
         final Renderable renderable = getItem(position);
         convertView = configureRenderer(convertView, parent, renderable.getRenderableId());
         final Renderer rendererInterface = (Renderer) convertView.getTag();
-        rendererInterface.hookUpListeners(convertView, renderable);
-        rendererInterface.render(parent.getContext(), renderable, position, position == 0, position == getCount() - 1);
+        rendererInterface.hookUpListeners(renderable);
+        rendererInterface.render(renderable, position, position == 0, position == getCount() - 1);
         return convertView;
     }
 
     protected View configureRenderer(View convertView, ViewGroup parent, int renderableId) {
-        return builder.instantiate(renderableId)
-                .into(convertView)
-                .inside(parent)
-                .using(LayoutInflater.from(parent.getContext()))
-                .interactingWith(postable)
-                .addingConfiguratior(extras)
-                .create();
+        if (!isAdapterInitialized(renderableId)) {
+            throw new IllegalStateException(renderableId == 0 ? "Builder requires a valid ID" :
+                    "Factory is null");
+        }
+        final Renderer renderer;
+        if (!isRecyclable(renderableId, convertView)) {
+            renderer = factory.getRenderer(renderableId, postable, convertView);
+            convertView = createInflater(parent.getContext()).inflate(renderableId, parent, false);
+            convertView.setTag(renderer);
+        }
+        return convertView;
+    }
+
+    protected LayoutInflater createInflater(Context context) {
+        return LayoutInflater.from(context);
+    }
+
+    /**
+     * Checks if a Renderer if compatible with the existing one.
+     * <p/>
+     * A Renderer has to be recycled (inflated) if
+     * - The View is not initialized
+     * - The Renderer is null
+     * - The Renderable and the cached Renderer have different Renderer IDs (incompatible Layout IDs)
+     *
+     * @param id   ID of the new Renderer
+     * @param view View which Tag contains a Rendered ID
+     * @return TRUE if the renderer can be reused, FALSE otherwise
+     * @see com.sefford.brender.interfaces.Renderable
+     */
+    protected boolean isRecyclable(int id, View view) {
+        return view != null && view.getTag() != null && id == ((Renderer) view.getTag()).getId();
+    }
+
+    /**
+     * Returns if the Adapter is correctly initialized.
+     * <p/>
+     * Only the ID of the renderer, the inflater and the factory are necessary for the Adapter to have a consistent state.
+     * <p/>
+     * Many views do not require a ViewGroup straightforward and eventually is added to it during the flow of the view. Similarly,
+     * extras might not be required by your Renderers to work. In the case of Adapters, the initial view is null, therefore
+     * the Factory will consider the Renderer {@link #isRecyclable(int, android.view.View) not suitable to be recycled}.
+     *
+     * @param renderableId ID of the {@link Renderable Renderable}
+     * @return TRUE if renderable ID is not 0 and Layout Inflater not null and the Factory is not null, FALSE otherwise.
+     */
+    public boolean isAdapterInitialized(int renderableId) {
+        return renderableId > 0 && factory != null;
     }
 
     @Override
     public Filter getFilter() {
-        if (data instanceof Filter) {
-            return data.getFilter();
-        }
-        return new NullFilter();
+        return data.getFilter() == null ? new NullFilter() : data.getFilter();
     }
 }

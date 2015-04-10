@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Saúl Díaz
+ * Copyright (C) 2015 Saúl Díaz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,36 +15,29 @@
  */
 package com.sefford.brender.interfaces;
 
-import android.widget.Filterable;
-
 /**
- * Adapter element created for adapting to RendererAdapter interface
+ * Makes a header identify its ID
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
-public interface AdapterData extends Filterable {
+public interface HeaderIdentifier<T extends Renderable> {
 
     /**
-     * Returns the size of the held data
+     * Gets the Header Renderable ID
      *
-     * @return Size of the held data
+     * @param renderable Renderable element
+     * @param position   Position of the element
+     * @return R.layout-based ID
+     * @see {com.sefford.brender.interfaces.Renderable Renderable}
      */
-    int size();
+    int getRenderableId(T renderable, int position);
 
     /**
-     * Retrieves the item ID
+     * Gets the Header ID
      *
-     * @param pos Position of the element
-     * @return ID of the element
+     * @param renderable Renderable element
+     * @param position   Position of the element
+     * @return Long, abritrary ID
      */
-    long getItemId(int pos);
-
-    /**
-     * Retrieves the element on position pos
-     *
-     * @param pos Position of the element
-     * @return Renderable at position pos
-     */
-    Renderable getItem(int pos);
-
+    long getHeaderId(T renderable, int position);
 }

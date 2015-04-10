@@ -1,8 +1,22 @@
-package com.sefford.brender;
+/*
+ * Copyright (C) 2015 Saúl Díaz
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.sefford.brender.renderers;
 
-import android.content.Context;
-import android.view.View;
 import com.sefford.brender.interfaces.Postable;
+import com.sefford.brender.interfaces.Renderable;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -41,7 +55,7 @@ public class AbstractRendererTest {
         assertThat(renderer.getId(), equalTo(EXPECTED_RENDERER_ID));
     }
 
-    class RendererTest extends AbstractRenderer<Object> {
+    class RendererTest extends AbstractRenderer<Renderable> {
 
         /**
          * Creates a new instance of a Renderer
@@ -54,17 +68,12 @@ public class AbstractRendererTest {
         }
 
         @Override
-        public void mapViews(View view) {
-            // Do nothing
-        }
-
-        @Override
-        public void hookUpListeners(View view, Object renderable) {
+        public void hookUpListeners(Renderable renderable) {
             // This space for rent
         }
 
         @Override
-        public void render(Context context, Object renderable, int position, boolean first, boolean last) {
+        public void render(Renderable renderable, int position, boolean first, boolean last) {
             // This one too
         }
     }

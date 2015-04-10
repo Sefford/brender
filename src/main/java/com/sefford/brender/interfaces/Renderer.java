@@ -15,36 +15,26 @@
  */
 package com.sefford.brender.interfaces;
 
-import android.content.Context;
-import android.view.View;
-
 /**
  * Abstracts the behavior of a Renderer.
  *
  * @author Saul Diaz <sefford@gmail.com>
  */
 public interface Renderer<T> {
-    /**
-     * Sets up the Renderer views
-     *
-     * @param view View to set the child views of the Renderer
-     */
-    void mapViews(View view);
 
     /**
      * Hooks up the listeners of the Renderer
      */
-    void hookUpListeners(View view, T renderable);
+    void hookUpListeners(T renderable);
 
     /**
      * Renders the view
      *
-     * @param context    Context for Resource inflation
      * @param renderable Renderable item to set the info from
      * @param first      Is first of the list
      * @param last       is last of the list
      */
-    void render(Context context, T renderable, int position, boolean first, boolean last);
+    void render(T renderable, int position, boolean first, boolean last);
 
     /**
      * Unique ID of the Renderer

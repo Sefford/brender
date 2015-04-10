@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sefford.brender;
+package com.sefford.brender.renderers;
 
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderer;

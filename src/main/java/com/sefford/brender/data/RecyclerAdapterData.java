@@ -60,6 +60,17 @@ public class RecyclerAdapterData implements AdapterData {
     }
 
     @Override
+    public int getViewTypeCount() {
+        // AFAIK this is not necessary on RecyclerViews
+        return 0;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        // Empty
+    }
+
+    @Override
     public Filter getFilter() {
         return new NullFilter();
     }

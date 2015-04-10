@@ -53,6 +53,16 @@ public class FilterableAdapterDataTest {
 
         adapterData = new FilterableAdapterData(master) {
             @Override
+            public int getViewTypeCount() {
+                return 0;
+            }
+
+            @Override
+            public void notifyDataSetChanged() {
+
+            }
+
+            @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 results.count = filtered.size();

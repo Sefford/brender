@@ -30,7 +30,7 @@ import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
  * @author Saul Diaz <sefford@gmail.com>
  */
 
-public class HeaderRendererAdapter extends RendererAdapter implements StickyListHeadersAdapter {
+public class StickyHeaderRendererAdapter extends RendererAdapter implements StickyListHeadersAdapter {
 
     final HeaderIdentifier headerIdentifier;
 
@@ -42,7 +42,7 @@ public class HeaderRendererAdapter extends RendererAdapter implements StickyList
      * @param bus              Bus to notify the UI of events on the renderers
      * @param headerIdentifier Header identifier facilities
      */
-    public HeaderRendererAdapter(AdapterData data, RendererFactory factory, Postable bus, HeaderIdentifier headerIdentifier) {
+    public StickyHeaderRendererAdapter(AdapterData data, RendererFactory factory, Postable bus, HeaderIdentifier headerIdentifier) {
         super(data, factory, bus);
         this.headerIdentifier = headerIdentifier;
     }

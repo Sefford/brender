@@ -139,4 +139,21 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
     public Filter getFilter() {
         return data.getFilter() == null ? new NullFilter() : data.getFilter();
     }
+
+    @Override
+    public int getViewTypeCount() {
+        return data.getViewTypeCount();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        data.notifyDataSetChanged();
+        super.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyDataSetInvalidated() {
+        data.notifyDataSetChanged();
+        super.notifyDataSetInvalidated();
+    }
 }

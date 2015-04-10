@@ -44,6 +44,7 @@ public class RendererAdapterTest {
     static final int EXPECTED_COUNT = 1;
     static final long EXPECTED_ITEM_ID = 921984L;
     static final int EXPECTED_RENDERABLE_ID = (int) EXPECTED_ITEM_ID;
+    static final int EXPECTED_VIEWTYPE_COUNT = 3;
 
     RendererAdapter adapter;
 
@@ -201,6 +202,28 @@ public class RendererAdapterTest {
     @Test
     public void testCreateNullView() throws Exception {
         assertEquals(renderer, adapter.configureRenderer(null, parent, EXPECTED_RENDERABLE_ID).getTag());
+    }
+
+    @Test
+    public void testGetViewTypeCount() throws Exception {
+        when(data.getViewTypeCount()).thenReturn(EXPECTED_VIEWTYPE_COUNT);
+
+        assertEquals(EXPECTED_VIEWTYPE_COUNT, adapter.getViewTypeCount());
+
+    }
+
+    @Test
+    public void testNotifyDataSetChanged() throws Exception {
+        adapter.notifyDataSetChanged();
+
+        verify(data, times(1)).notifyDataSetChanged();
+    }
+
+    @Test
+    public void testNotifyDataSetInvalidated() throws Exception {
+        adapter.notifyDataSetInvalidated();
+
+        verify(data, times(1)).notifyDataSetChanged();
     }
 
     class RenderableTest implements Renderable {

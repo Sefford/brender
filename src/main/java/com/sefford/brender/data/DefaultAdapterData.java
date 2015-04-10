@@ -21,7 +21,9 @@ import com.sefford.brender.filters.NullFilter;
 import com.sefford.brender.interfaces.AdapterData;
 import com.sefford.brender.interfaces.Renderable;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Adapter Data which does not filter data and does not provide a Extra.
@@ -34,6 +36,10 @@ public final class DefaultAdapterData implements AdapterData {
      * Master data of the adapter
      */
     protected final List<Renderable> master;
+    /**
+     * Number of types of views inside the Data
+     */
+    protected final Set<Integer> viewTypes;
 
     /**
      * Creates a new instance of UnfilterableData
@@ -42,6 +48,19 @@ public final class DefaultAdapterData implements AdapterData {
      */
     public DefaultAdapterData(List<Renderable> master) {
         this.master = master;
+        this.viewTypes = new HashSet<>();
+        computeViewTypes(master);
+    }
+
+    /**
+     * Computes the number of different View Types inside the AdapterData
+     *
+     * @param master List of the data
+     */
+    protected void computeViewTypes(List<Renderable> master) {
+        for (Renderable renderable : master) {
+            viewTypes.add(renderable.getRenderableId());
+        }
     }
 
     @Override
@@ -60,7 +79,20 @@ public final class DefaultAdapterData implements AdapterData {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return viewTypes.size();
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        viewTypes.clear();
+        computeViewTypes(master);
+    }
+
+    @Override
     public Filter getFilter() {
         return new NullFilter();
     }
+
+
 }

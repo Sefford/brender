@@ -16,6 +16,7 @@
 package com.sefford.brender.interfaces;
 
 import android.widget.Filterable;
+import com.sefford.brender.adapters.RendererAdapter;
 
 /**
  * Adapter element created for adapting to RendererAdapter interface
@@ -46,5 +47,21 @@ public interface AdapterData extends Filterable {
      * @return Renderable at position pos
      */
     Renderable getItem(int pos);
+
+    /**
+     * Returns the number different of classes of views contained inside the AdapterData.
+     * Due to Brenders architecture this is usually composed of the different {@link Renderable#getRenderableId() Renderable IDs}
+     * of the Renderables.
+     *
+     * @return Number of different classes of views
+     */
+    int getViewTypeCount();
+
+    /**
+     * Convenience method to update the {@link #getViewTypeCount() View Type Count} of the AdapterData.
+     * <p/>
+     * This is called together with the {@link RendererAdapter#notifyDataSetChanged()}.
+     */
+    void notifyDataSetChanged();
 
 }

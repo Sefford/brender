@@ -1,5 +1,15 @@
 Changelog
 =========
+
+## Brender 2.0.0
+_2015-04-10_
+
+* Added support for RecyclerView-based views
+* Added support for StickyListHeaders
+* Simplified Renderer interface
+* Removed RendererBuilder and integrated its functionality inside the RendererAdapter
+* Added itemView support to AdapterData for classic AdapterView support
+
 ## Brender 1.0.3
 _2014-09-16_
 

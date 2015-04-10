@@ -16,7 +16,7 @@ Brender comes bundled in `aar` format. Grab the latest bundle from [here](http:/
 <dependency>
     <groupId>com.sefford</groupId>
     <artifactId>brender</artifactId>
-    <version>1.0.3</version>
+    <version>2.0.0</version>
     <type>aar</type>
 </dependency>
 ```
@@ -24,7 +24,7 @@ Brender comes bundled in `aar` format. Grab the latest bundle from [here](http:/
 ### Gradle 
 
 ```groovy
-compile 'com.sefford:brender:1.0.3@aar'
+compile 'com.sefford:brender:2.0.0@aar'
 ```
 
 Why Renderers?
@@ -59,6 +59,15 @@ Brender library provides a basic template class for Renderers with the ID and a 
 The Renderers are loosely coupled so the developer can extend their own via the AbstractRenderer
 or implementing the `Renderer` interface.
 
+### AdapterDatas
+
+`AdapterData` is an interface which wraps around a data collection to provide an abstraction on the `RendererAdapter`. 
+
+Provides an interface to produce Filters for searching or filtering purposes.
+
+From Brender 2.0.0 it also will detect the number of view types and provide it accordingly to the adapter. This number
+needs to be recalculated on `notifyDataSetChanged`, so be aware of large collections.
+
 ### Renderer and Renderable IDs
 
 A Renderer will be recyclable when the intended Renderer has the same `Renderer IDs`. 
@@ -75,7 +84,7 @@ These IDs are provided by the model classes by implementing `Renderable` interfa
 
 ### Instantiation of Renderers
 
-The default implementation of Brender relies on a Builder element with fluent a API which takes
+The default implementation of Brender relies on a factory element with fluent a API which takes
 the boilerplate of instantiating the Renderers, as it works inside the `RendererAdapter`.
 
 The developer will be able to delegate the actual creation of Renderers via injecting a `RendererFactory` interface
@@ -85,26 +94,94 @@ so several Builders and Factories can persist on several points of the applicati
 ### Communicating back to the UI
 
 The Renderers make use of a `Postable` interface to communicate events to the UI. This design decision
-was done in order to avoid lengthy signatures. 
+was done in order to avoid lengthy signatures.
 
 This is intended to wrap an Event Bus and post events through it. [Square's Otto](http://square.github.io/otto) or [GreenRobot's EventBus](https://github.com/greenrobot/EventBus)
 are highly recommended for this task.
 
-### Extending Renderers functionality
+However dynamic factories can be injected to the RendererAdapter configured with local callback methods.
 
-In order to make the Renderers extensible to a variety of necessities, a configuration object known
-as `extra` is passed down the Builder and the Factory. This object does not have any requisite and
-it is up to the developer to decide on its implementation.
+RecyclerView support
+--------------------
 
-Typically this will allow to inject dependencies to the Renderer's constructor without having to extend
-or modify the default Builder. The Builder and the Factory is generified, so the developer can choose
-to cast the object or directly assign a type to both.
+From version 2.0.0 onwards, Brender supports [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html).
 
-Additionally the developer can find the interfaces at `com.sefford.brender.interfaces` package to
-build its own implementation of the Renderer pattern.
+To user Brender with RecyclerViews you require to use a `RecyclerRendererAdapter` which provides the same functionality
+as the classic `RendererAdapter` but extends from `RecyclerView.Adapter` instead from a `BaseAdapter`. 
 
-Advanced usage
---------------
+Take into account that the basic `AbstractRenderer` implementation no longer will suffice and `Renderers` that are 
+required to work with RecyclerViews will need to extend `ViewHolder`. However Renderers that work with RecyclerViews are
+backwards compatible with the classic RendererAdapters.
+
+StickyListHeadersListView support
+---------------------------------
+
+From version 2.0.0 onwards, Brender supports the popular [StickyListHeader library](https://github.com/emilsjolander/StickyListHeaders) from [Emil Sjölander](http://emilsjolander.se),
+making the possibility of using Renderers with the headers too.
+
+In order to do so, you require to set a `StickyHeaderRendererAdapter` to the StickyListHeadersListView. The only difference
+with a normal `RendererAdapter` is that you must provide the adapter with a `HeaderIdentifier` instance.
+ 
+### HeaderIdentifier interface
+
+The interface `HeaderIdentifier` should be typically synced to the data in the adapter, and can be targeted to particular
+`Renderable` elements if required. A StickyListHeader is normally shared among several objects in a row, so the HeaderIdentifier
+can provide a Renderable ID per Renderable and/or position of the data list.
+
+It also wraps the `getHeaderId` method to allow StickyListHeader to provide different instances of the same type of header.
+
+Migrating from Brender 1.0.X to 2.X
+------------------------------------
+
+Some parts of Brender have been extensively reworked to simplify and provide an unified interface between ListViews, RecyclerViews
+and StickyListHeaderListViews and developers using previous versions should be aware of these changes to accomodate the new
+versions of Brender.
+
+### Removed RendererBuilder interface and classes
+
+I found to be overengineering to configure the `Renderer` through a Builder to rely on the `RendererFactory` to
+instantiate the Renderer, so I moved the necessary logic inside the Adapters and deleted both the interface and the 
+default implementation.
+
+The only requirement now is to provide a RendererFactory interface to the adapter, which is simpler. However, Brender
+cannot provide a default implementation, as it is now up to the developer. If you have been using Brender previously, you
+can reuse the existing factories.
+
+### Removed extras from RendererFactory.getRenderer() signature
+
+I do not think this was a very useful feature that added some boilerplate code. If you need an ad-hoc configuration for
+your Renderers you can do so defining those on `RendererFactory` instances that are initialized locally instead of a
+global instance.
+
+### Changed order of flow with Renderer interface
+
+I just found in some cases, some listeners may make use of information loaded at `Renderer.render()` time on the views,
+forcing to set up an actionListener on render time. As it should not affect the normal usage of the Renderers, now the
+RendererAdapters will first render, then refresh `hookupActionListeners` with the updated information from the `Renderable`
+and having the latest view state already configured.
+
+### Removed Renderer.mapViews() from Renderer interface
+
+As it was mandatory to inject the view into the renderer on the RecyclerRendererAdapter, rendering `mapViews` innecessary,
+it was removed from the interface. Now all the view initialization should be done at `Renderer` construction time.
+
+
+### Removed Context from Renderer.render() signature
+
+As you are using a Renderer, which is basically an adapter for Android views, this means you can call `View.getContext()`
+any time to produce a usable `Context` instance. In this way, injecting a Context in the signature was redundant, as now
+the views are initialized in construction time.
+
+Remember not to store it to avoid possible memory leakage.
+
+### Removed View parameter from Renderer.hookupListeners() signature
+ 
+With RecyclerView compatible `Renderers` requiring to extend `ViewHolder` and passing the View on construction time, it 
+is no longer necessary to pass the View on hookupListeners, requiring only the use of a `Renderable` to configure and 
+re-set the listeners.
+
+Advanced usage & tips
+---------------------
 
 ### ButterKnife
 

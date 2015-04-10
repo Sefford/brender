@@ -33,13 +33,13 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Created by sefford on 10/04/15.
  */
 @RunWith(RobolectricTestRunner.class)
-public class HeaderRendererAdapterTest {
+public class StickyHeaderRendererAdapterTest {
 
     static final long EXPECTED_HEADER_ID = 12345L;
     static final int EXPECTED_RENDERABLE_ID = 11111;
     static final int EXPECTED_SIZE = 1;
 
-    HeaderRendererAdapter adapter;
+    StickyHeaderRendererAdapter adapter;
 
     @Mock
     HeaderIdentifier<Renderable> identifier;
@@ -63,7 +63,7 @@ public class HeaderRendererAdapterTest {
     public void setUp() throws Exception {
         initMocks(this);
 
-        adapter = spy(new HeaderRendererAdapter(data, factory, bus, identifier));
+        adapter = spy(new StickyHeaderRendererAdapter(data, factory, bus, identifier));
     }
 
     @Test

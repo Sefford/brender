@@ -45,6 +45,7 @@ public class RendererAdapterTest {
     static final long EXPECTED_ITEM_ID = 921984L;
     static final int EXPECTED_RENDERABLE_ID = (int) EXPECTED_ITEM_ID;
     static final int EXPECTED_VIEWTYPE_COUNT = 3;
+    static final int EXPECTED_DEFAULT_VIEWTYPE_COUNT = 1;
 
     RendererAdapter adapter;
 
@@ -107,7 +108,7 @@ public class RendererAdapterTest {
     @Test
     public void testGetViewOnlyOne() throws Exception {
         adapter.getView(0, null, parent);
-        verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, null);
+        verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, view);
         verify(renderer, times(1)).hookUpListeners(renderable);
         verify(renderer, times(1)).render(renderable, 0, true, true);
     }
@@ -115,7 +116,7 @@ public class RendererAdapterTest {
     @Test
     public void testGetViewNotTheOnlyOne() throws Exception {
         adapter.getView(3, null, parent);
-        verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, null);
+        verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, view);
         verify(renderer, times(1)).hookUpListeners(renderable);
         verify(renderer, times(1)).render(renderable, 3, false, false);
     }
@@ -209,7 +210,13 @@ public class RendererAdapterTest {
         when(data.getViewTypeCount()).thenReturn(EXPECTED_VIEWTYPE_COUNT);
 
         assertEquals(EXPECTED_VIEWTYPE_COUNT, adapter.getViewTypeCount());
+    }
 
+    @Test
+    public void testGetViewTypeCountWithNoData() {
+        when(data.getViewTypeCount()).thenReturn(0);
+
+        assertEquals(EXPECTED_DEFAULT_VIEWTYPE_COUNT, adapter.getViewTypeCount());
     }
 
     @Test

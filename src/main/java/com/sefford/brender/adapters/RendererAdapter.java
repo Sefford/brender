@@ -91,8 +91,8 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
         }
         final Renderer renderer;
         if (!isRecyclable(renderableId, convertView)) {
-            renderer = factory.getRenderer(renderableId, postable, convertView);
             convertView = createInflater(parent.getContext()).inflate(renderableId, parent, false);
+            renderer = factory.getRenderer(renderableId, postable, convertView);
             convertView.setTag(renderer);
         }
         return convertView;
@@ -142,7 +142,8 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getViewTypeCount() {
-        return data.getViewTypeCount();
+        // Because there can't be an adapter with 0 type of views
+        return Math.max(data.getViewTypeCount(), 1);
     }
 
     @Override

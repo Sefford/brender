@@ -34,12 +34,12 @@ import static org.mockito.MockitoAnnotations.initMocks;
  * Created by sefford on 9/04/15.
  */
 @RunWith(RobolectricTestRunner.class)
-public class RecyclerAdapterDataTest {
+public class DefaultRecyclerAdapterDataTest {
 
     static final int EXPECTED_RENDERABLE_ID = 0x12345678;
     static final int EXPECTED_SIZE = 1;
 
-    RecyclerAdapterData adapterData;
+    DefaultRecyclerAdapterData adapterData;
 
     @Mock
     Renderable renderable;
@@ -55,7 +55,7 @@ public class RecyclerAdapterDataTest {
         renderableList = new ArrayList<>();
         renderableList.add(renderable);
 
-        adapterData = new RecyclerAdapterData(renderableList);
+        adapterData = new DefaultRecyclerAdapterData(renderableList);
     }
 
     @Test

@@ -19,20 +19,19 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import com.sefford.brender.data.RecyclerAdapterData;
-import com.sefford.brender.interfaces.AdapterData;
-import com.sefford.brender.interfaces.Postable;
-import com.sefford.brender.interfaces.Renderer;
-import com.sefford.brender.interfaces.RendererFactory;
+import android.widget.Filter;
+import android.widget.Filterable;
+import com.sefford.brender.filters.NullFilter;
+import com.sefford.brender.interfaces.*;
 
 /**
  * Created by sefford on 27/03/15.
  */
-public class RecyclerRendererAdapter extends RecyclerView.Adapter {
+public class RecyclerRendererAdapter extends RecyclerView.Adapter implements Filterable {
     /**
      * Adapter data
      */
-    protected final AdapterData data;
+    protected final RecyclerAdapterData data;
     protected final RendererFactory factory;
     /**
      * Bus to notify the UI of events on the renderers
@@ -72,5 +71,30 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter {
         return (int) data.getItemId(position);
     }
 
+
+    @Override
+    public Filter getFilter() {
+        return data.getFilter() == null ? new NullFilter() : data.getFilter();
+    }
+
+    public void addHeader(Renderable header) {
+        data.addHeader(header);
+        notifyDataSetChanged();
+    }
+
+    public void removeHeader(Renderable header){
+        data.removeHeader(header);
+        notifyDataSetChanged();
+    }
+
+    public void addFooter(Renderable footer) {
+        data.addFooter(footer);
+        notifyDataSetChanged();
+    }
+
+    public void removeFooter(Renderable footer) {
+        data.removeFooter(footer);
+        notifyDataSetChanged();
+    }
 
 }

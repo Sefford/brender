@@ -15,6 +15,7 @@
  */
 package com.sefford.brender.data;
 
+import com.sefford.brender.data.DefaultAdapterData;
 import com.sefford.brender.filters.NullFilter;
 import com.sefford.brender.interfaces.Renderable;
 import org.junit.Before;

@@ -15,6 +15,9 @@
  */
 package com.sefford.brender.renderers;
 
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderer;
 
@@ -30,7 +33,7 @@ import com.sefford.brender.interfaces.Renderer;
  *
  * @author Saul Diaz<sefford@gmail.com>
  */
-public abstract class AbstractRenderer<T extends Object> implements Renderer<T> {
+public abstract class AbstractRenderer<T extends Object> extends RecyclerView.ViewHolder implements Renderer<T> {
 
 
     /**
@@ -52,7 +55,8 @@ public abstract class AbstractRenderer<T extends Object> implements Renderer<T> 
      * @param id       Building ID of the renderer
      * @param postable Postable interface to notify events to the UI
      */
-    public AbstractRenderer(int id, Postable postable) {
+    public AbstractRenderer(int id, Postable postable, View view) {
+        super(view);
         this.id = id;
         this.postable = postable;
     }

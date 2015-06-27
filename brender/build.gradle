@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'org.robolectric:robolectric-gradle-plugin:1.1.0'
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'org.robolectric'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        minSdkVersion 7
+        targetSdkVersion 22
+        versionCode rootProject.getProperties().versionMajor * 100000 + rootProject.getProperties().versionMinor * 1000 + rootProject.getProperties().versionPatch * 100 + rootProject.getProperties().versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    compile project(':brender-base')
+    compile 'se.emilsjolander:stickylistheaders:2.5.2'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:2.0.2-beta'
+    testCompile 'org.robolectric:robolectric:3.0-rc3'
+}

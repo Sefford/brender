@@ -15,12 +15,16 @@
  */
 package com.sefford.brender.renderers;
 
+import android.view.View;
+
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -35,19 +39,22 @@ public class AbstractRendererTest {
     static final int EXPECTED_RENDERER_ID = 1234;
     @Mock
     Postable bus;
+    @Mock
+    View view;
     RendererTest renderer;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
 
-        renderer = new RendererTest(EXPECTED_RENDERER_ID, bus);
+        renderer = new RendererTest(EXPECTED_RENDERER_ID, bus, view);
     }
 
     @Test
     public void testInitialization() throws Exception {
-        assertThat(renderer.id, equalTo(EXPECTED_RENDERER_ID));
-        assertThat(renderer.postable, equalTo(bus));
+        assertEquals(EXPECTED_RENDERER_ID, renderer.id);
+        assertEquals(bus, renderer.postable);
+        assertEquals(view, renderer.itemView);
     }
 
     @Test
@@ -63,8 +70,8 @@ public class AbstractRendererTest {
          * @param id       Building ID of the renderer
          * @param postable Bus Manager to notify the event to the UI
          */
-        public RendererTest(int id, Postable postable) {
-            super(id, postable);
+        public RendererTest(int id, Postable postable, View view) {
+            super(id, postable, view);
         }
 
         @Override

@@ -17,12 +17,13 @@ package com.sefford.brender.renderers;
 
 import android.view.View;
 
-import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+
+import sefford.com.common.interfaces.Postable;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;

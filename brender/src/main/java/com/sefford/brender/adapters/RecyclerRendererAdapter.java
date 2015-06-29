@@ -21,9 +21,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.sefford.brender.data.RecyclerAdapterData;
 import com.sefford.brender.interfaces.AdapterData;
-import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
+
+import sefford.com.common.interfaces.Postable;
 
 /**
  * Created by sefford on 27/03/15.

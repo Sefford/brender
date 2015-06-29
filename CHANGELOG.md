@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## Brender 2.1.0
+_2015-06-29_
+
+* Moved Build system from Maven to Gradle
+* Separated the project in two artifacts: brender-base, pure Java and brender, with the Android-dependencies
+* Extracted Postable interface to sefford-commons artifact
+
 ## Brender 2.0.0
 _2015-04-10_
 

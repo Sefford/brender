@@ -20,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.sefford.brender.data.RecyclerAdapterData;
-import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
@@ -31,6 +30,8 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import sefford.com.common.interfaces.Postable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

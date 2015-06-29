@@ -1,2 +1,2 @@
-include ':brender', ':brender-base'
+include ':brender-base', ':brender'
 rootProject.name = 'brender'

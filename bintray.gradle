@@ -1,0 +1,66 @@
+def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('yyyy-MM-dd\'T\'HH:mm:ss.SSSZZ')
+    return formattedDate
+}
+
+bintray {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    def currentVersion = rootProject.version
+
+    configurations = ['deployables'] //When uploading configuration files
+    // - OR -
+    publications = ['mavenStuff'] //When uploading Maven-based publication files
+    // - AND/OR -
+    filesSpec { //When uploading any arbitrary files ('filesSpec' is a standard Gradle CopySpec)
+        from 'arbitrary-files'
+        into 'standalone_files/level1'
+        rename '(.+)\\.(.+)', '$1-suffix.$2'
+    }
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
+    pkg {
+        repo = project.bintrayRepo
+        name = project.bintrayName
+//        userOrg = project.publishedGroupId
+        //An optional organization name when the repo belongs to one of the user's orgs
+        desc = project.ext.
+        websiteUrl = project.siteUrl
+        issueTrackerUrl = project.issueUrl
+        vcsUrl = project.gitUrl
+        licenses = ['Apache-2.0']
+        labels = ['renderers', 'android']
+        publicDownloadNumbers = true
+        //Optional package-level attributes
+        //Optional version descriptor
+        version {
+            name = currentVersion //Bintray logical version name
+            desc = project.issueUrl//Optional - Version-specific description'
+            released = getDate()
+            //Optional - Date of the version release. 2 possible values: date in the format of 'yyyy-MM-dd'T'HH:mm:ss.SSSZZ' OR a java.util.Date instance
+            vcsTag = currentVersion
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            //Optional version-level attributes
+            //Optional configuration for GPG signing
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+            //Optional configuration for Maven Central sync of the version
+            mavenCentralSync {
+                sync = false
+                //Optional (true by default). Determines whether to sync the version to Maven Central.
+                user = properties.getProperty("oss.user")//OSS user token
+                password = properties.getProperty("oss.password") //OSS user password
+                close = '1'
+                //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
+        }
+    }
+}

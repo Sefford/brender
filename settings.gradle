@@ -1,0 +1,2 @@
+include ':brender-base', ':brender'
+rootProject.name = 'brender'

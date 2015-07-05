@@ -1,0 +1,18 @@
+ext {
+    versionMajor = 2
+    versionMinor = 1
+    versionPatch = 0
+    versionBuild = 0
+}
+
+group = 'com.sefford'
+version = "${versionMajor}.${versionMinor}.${versionPatch}"
+
+description = 'brender'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+
+
+

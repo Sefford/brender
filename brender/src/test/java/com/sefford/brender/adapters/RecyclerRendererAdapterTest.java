@@ -23,6 +23,8 @@ import com.sefford.brender.data.RecyclerAdapterData;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
+import com.sefford.common.interfaces.Postable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +32,6 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-
-import sefford.com.common.interfaces.Postable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

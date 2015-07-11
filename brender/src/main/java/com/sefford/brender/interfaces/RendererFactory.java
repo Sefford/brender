@@ -17,7 +17,7 @@ package com.sefford.brender.interfaces;
 
 import android.view.View;
 
-import sefford.com.common.interfaces.Postable;
+import com.sefford.common.interfaces.Postable;
 
 /**
  * Abstraction for the Renderer Factory Interface

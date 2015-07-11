@@ -19,12 +19,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import com.sefford.brender.data.RecyclerAdapterData;
 import com.sefford.brender.interfaces.AdapterData;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
-
-import sefford.com.common.interfaces.Postable;
+import com.sefford.common.interfaces.Postable;
 
 /**
  * Created by sefford on 27/03/15.

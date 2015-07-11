@@ -18,8 +18,9 @@ package com.sefford.brender.adapters;
 import android.view.View;
 import android.view.ViewGroup;
 import com.sefford.brender.interfaces.*;
+import com.sefford.common.interfaces.Postable;
+
 import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
-import sefford.com.common.interfaces.Postable;
 
 /**
  * Renderable adapter that derives from {@link  RendererAdapter RendererAdapter} adding

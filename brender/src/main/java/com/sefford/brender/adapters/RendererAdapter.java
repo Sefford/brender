@@ -22,13 +22,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+
 import com.sefford.brender.filters.NullFilter;
 import com.sefford.brender.interfaces.AdapterData;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
-
-import sefford.com.common.interfaces.Postable;
+import com.sefford.common.interfaces.Postable;
 
 /**
  * Renderable adapter to mix several Renderable types.

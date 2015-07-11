@@ -19,8 +19,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.sefford.brender.interfaces.Renderer;
+import com.sefford.common.interfaces.Postable;
 
-import sefford.com.common.interfaces.Postable;
 
 /**
  * A Renderer is an abstraction of the ViewHolder pattern.

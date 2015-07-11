@@ -22,14 +22,14 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import com.sefford.brender.filters.NullFilter;
 import com.sefford.brender.interfaces.*;
+import com.sefford.common.interfaces.Postable;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
-
-import sefford.com.common.interfaces.Postable;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;

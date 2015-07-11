@@ -24,7 +24,7 @@ apply plugin: 'maven-publish'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'brender'
+    bintrayName = 'Brender'
 
     publishedGroupId = 'com.sefford'
     libraryName = 'Brender'
@@ -66,14 +66,14 @@ repositories {
 }
 
 dependencies {
-    compile 'com.sefford:commons:1.0.0'
-    compile 'com.sefford:brender-base:'+project.libraryVersion
+    compile 'com.sefford:commons:1.0.1'
+    compile 'com.sefford:brender-base:' + project.libraryVersion
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
     compile 'com.android.support:recyclerview-v7:22.2.0'
 
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-all:2.0.2-beta'
-    testCompile 'org.robolectric:robolectric:3.0-rc3'
+    testCompile 'org.robolectric:robolectric:3.0'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

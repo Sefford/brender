@@ -57,7 +57,7 @@ public class DefaultRecyclerAdapterData implements RecyclerAdapterData {
 
     @Override
     public int size() {
-        return headers.size() + master.size() + footers.size();
+        return master.size();
     }
 
     @Override

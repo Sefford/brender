@@ -97,4 +97,12 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter implements Fil
         notifyDataSetChanged();
     }
 
+    public int getHeaderViewCount() {
+        return data.getHeaderViewCount();
+    }
+
+    public int getFooterViewCount() {
+        return data.getFooterViewCount();
+    }
+
 }

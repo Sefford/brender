@@ -59,6 +59,16 @@ public class RecyclerFilterableAdapterDataTest {
             }
 
             @Override
+            public int getHeaderViewCount() {
+                return 0;
+            }
+
+            @Override
+            public int getFooterViewCount() {
+                return 0;
+            }
+
+            @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 FilterResults results = new FilterResults();
                 results.count = filtered.size();

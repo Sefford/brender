@@ -106,6 +106,16 @@ public class DefaultRecyclerAdapterData implements RecyclerAdapterData {
         headers.remove(header);
     }
 
+    @Override
+    public int getHeaderViewCount() {
+        return headers.size();
+    }
+
+    @Override
+    public int getFooterViewCount() {
+        return footers.size();
+    }
+
 
     @Override
     public Filter getFilter() {

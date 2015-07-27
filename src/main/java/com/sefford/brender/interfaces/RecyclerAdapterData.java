@@ -44,8 +44,11 @@ public interface RecyclerAdapterData extends Filterable {
      */
     void addHeader(Renderable data);
 
-
     void removeFooter(Renderable footer);
 
     void removeHeader(Renderable header);
+
+    int getHeaderViewCount();
+
+    int getFooterViewCount();
 }

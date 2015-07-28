@@ -57,7 +57,7 @@ public abstract class RecyclerFilterableAdapterData extends Filter implements Re
 
     @Override
     public long getItemId(int pos) {
-        return pos;
+        return master.get(pos).getRenderableId();
     }
 
     @Override

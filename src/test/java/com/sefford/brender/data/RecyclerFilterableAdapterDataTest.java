@@ -15,7 +15,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 @RunWith(RobolectricTestRunner.class)
 public class RecyclerFilterableAdapterDataTest {
 
-    private static final int EXPECTED_POS = 1;
+    private static final int EXPECTED_POS = 0;
 
     @Mock
     Renderable element;

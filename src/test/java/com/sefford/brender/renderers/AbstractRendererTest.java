@@ -17,6 +17,7 @@ package com.sefford.brender.renderers;
 
 import com.sefford.brender.interfaces.Postable;
 import com.sefford.brender.interfaces.Renderable;
+import com.sefford.brender.interfaces.RendererListener;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -75,6 +76,11 @@ public class AbstractRendererTest {
         @Override
         public void render(Renderable renderable, int position, boolean first, boolean last) {
             // This one too
+        }
+
+        @Override
+        public void setRendererListener(RendererListener listener) {
+            // Nothing
         }
     }
 }

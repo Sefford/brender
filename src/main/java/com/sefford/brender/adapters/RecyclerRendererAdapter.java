@@ -33,6 +33,7 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter implements Fil
      */
     protected final RecyclerAdapterData data;
     protected final RendererFactory factory;
+    private RendererListener listener;
     /**
      * Bus to notify the UI of events on the renderers
      */
@@ -43,6 +44,10 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter implements Fil
         this.data = data;
         this.postable = postable;
         this.factory = factory;
+    }
+
+    public void setRendererListener(RendererListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -57,6 +62,7 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter implements Fil
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Renderer renderer = (Renderer) holder;
+        renderer.setRendererListener(listener);
         renderer.render(data.getItem(position), position, position == 0, position == getItemCount() - 1);
         renderer.hookUpListeners(data.getItem(position));
     }

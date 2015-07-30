@@ -42,4 +42,6 @@ public interface Renderer<T> {
      * @return Renderer ID
      */
     int getId();
+
+    void setRendererListener(RendererListener listener);
 }

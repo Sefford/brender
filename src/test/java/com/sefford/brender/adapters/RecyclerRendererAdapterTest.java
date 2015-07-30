@@ -129,5 +129,10 @@ public class RecyclerRendererAdapterTest {
         public int getId() {
             return 0;
         }
+
+        @Override
+        public void setRendererListener(RendererListener listener) {
+
+        }
     }
 }

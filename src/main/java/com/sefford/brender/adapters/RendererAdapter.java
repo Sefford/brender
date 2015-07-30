@@ -36,6 +36,7 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
      * Adapter data
      */
     protected final AdapterData data;
+    private RendererListener listener;
     /**
      * Builder to instantiate the Renderers
      */
@@ -59,6 +60,10 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
         this.postable = postable;
     }
 
+    public void setRendererListener(RendererListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public int getCount() {
         return data.size();
@@ -79,6 +84,7 @@ public class RendererAdapter extends BaseAdapter implements Filterable {
         final Renderable renderable = getItem(position);
         convertView = configureRenderer(convertView, parent, renderable.getRenderableId());
         final Renderer rendererInterface = (Renderer) convertView.getTag();
+        rendererInterface.setRendererListener(listener);
         rendererInterface.hookUpListeners(renderable);
         rendererInterface.render(renderable, position, position == 0, position == getCount() - 1);
         return convertView;

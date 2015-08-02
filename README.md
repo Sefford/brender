@@ -121,6 +121,14 @@ making the possibility of using Renderers with the headers too.
 
 In order to do so, you require to set a `StickyHeaderRendererAdapter` to the StickyListHeadersListView. The only difference
 with a normal `RendererAdapter` is that you must provide the adapter with a `HeaderIdentifier` instance.
+
+CursorAdapter support
+---------------------
+
+From version 2.2.0 onwards, Brender supports CursorAdapters by using CursorRendererAdapter and CursorAdapterData. As Brender is intended to be used with POJOs,
+this CursorAdapter cannot return columns or types as normal Cursors do, and CursorAdapterData will be opened indefinetly.
+
+However, this is intended to be used with SearchView suggestions/autocomplete features and is yet to be tested on other situations.
  
 ### HeaderIdentifier interface
 

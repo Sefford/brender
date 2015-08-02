@@ -66,8 +66,8 @@ repositories {
 }
 
 dependencies {
-    compile 'com.sefford:commons:1.0.1'
-    compile 'com.sefford:brender-base:' + project.libraryVersion
+    compile 'com.sefford:brender-base:2.2.0'
+    compile 'com.sefford:commons:1.0.3'
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
     compile 'com.android.support:recyclerview-v7:22.2.0'
 

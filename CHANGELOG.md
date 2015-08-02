@@ -1,6 +1,13 @@
 Changelog
 =========
 
+## Brender 2.2.0
+_2015-08-2_
+
+* Added CursorRendererAdapter to support Cursor-based adapters like SearchView suggestions
+* Added CursorAdapterData to support CursorRendererAdapter
+* Removed Postable interface for [sefford-commons](https://github.com/Sefford/sefford-commons) unified version
+
 ## Brender 2.1.0
 _2015-06-29_
 

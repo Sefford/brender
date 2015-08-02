@@ -27,13 +27,18 @@ import com.sefford.brender.interfaces.RendererFactory;
 import com.sefford.common.interfaces.Postable;
 
 /**
- * Created by sefford on 27/03/15.
+ * Renderable adapter to mix several Renderable types for RecyclerView.
+ *
+ * @author Saul Diaz <sefford@gmail.com>
  */
 public class RecyclerRendererAdapter extends RecyclerView.Adapter {
     /**
      * Adapter data
      */
     protected final AdapterData data;
+    /**
+     * Factory to instantiate the renderers
+     */
     protected final RendererFactory factory;
     /**
      * Bus to notify the UI of events on the renderers

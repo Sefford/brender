@@ -30,7 +30,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
@@ -41,7 +41,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by sefford on 9/04/15.
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
 public class RecyclerRendererAdapterTest {
 
     static final int EXPECTED_LAYOUT_ID = 0x87654321;

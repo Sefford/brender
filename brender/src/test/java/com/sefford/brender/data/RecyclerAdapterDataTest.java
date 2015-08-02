@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RobolectricGradleTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by sefford on 9/04/15.
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(RobolectricGradleTestRunner.class)
 public class RecyclerAdapterDataTest {
 
     static final int EXPECTED_RENDERABLE_ID = 0x12345678;

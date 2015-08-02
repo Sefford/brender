@@ -42,7 +42,7 @@ public abstract class FilterableAdapterData extends Filter implements AdapterDat
     /**
      * Creates a new instance of FilterableAdapterData
      *
-     * @param master
+     * @param master Master list
      */
     public FilterableAdapterData(List<Renderable> master) {
         this.master = master;

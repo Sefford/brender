@@ -2,11 +2,12 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter()
+        jcenter();
     }
 
     dependencies {
-//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
     }
 }
 
@@ -14,8 +15,12 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 apply plugin: 'java'
-//apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven-publish'
+
+targetCompatibility = '1.7'
+sourceCompatibility = '1.7'
 
 ext {
     bintrayRepo = 'maven'
@@ -42,45 +47,44 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-//install {
-//    repositories.mavenInstaller {
-//        // This generates POM.xml with proper parameters
-//        pom {
-//            project {
-//                // Add your description here
-//                name libraryDescription
-//                url siteUrl
-//                groupId publishedGroupId
-//                artifactId artifact
-//                version libraryVersion
-//
-//                // Set your license
-//                licenses {
-//                    license {
-//                        name 'The Apache Software License, Version 2.0'
-//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-//                    }
-//                }
-//                developers {
-//                    developer {
-//                        id developerId
-//                        name developerName
-//                        email developerEmail
-//                    }
-//                }
-//                scm {
-//                    connection gitUrl
-//                    developerConnection gitUrl
-//                    url siteUrl
-//
-//                }
-//            }
-//        }
-//    }
-//}
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                // Add your description here
+                name libraryDescription
+                url siteUrl
+                groupId publishedGroupId
+                artifactId artifact
+                version libraryVersion
 
-//tasks.install.mustRunAfter build
+                // Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
 
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-//apply from: './bintray.gradle'
+                }
+            }
+        }
+    }
+}
 
+tasks.install.mustRunAfter build
+
+apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply from: './bintray.gradle'

@@ -15,6 +15,8 @@
  */
 package com.sefford.brender.interfaces;
 
+import java.util.List;
+
 /**
  * Abstracts the behavior of a Renderer.
  *
@@ -35,6 +37,14 @@ public interface Renderer<T> {
      * @param last       is last of the list
      */
     void render(T renderable, int position, boolean first, boolean last);
+
+    /**
+     * Refreshes the renderer with the payloads it received
+     *
+     * @param renderable Renderable item to set the info from
+     * @param payloads
+     */
+    void refresh(T renderable, List payloads);
 
     /**
      * Releases ViewHolder resources

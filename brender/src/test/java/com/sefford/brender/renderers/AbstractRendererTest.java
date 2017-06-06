@@ -83,5 +83,10 @@ public class AbstractRendererTest {
         public void render(Renderable renderable, int position, boolean first, boolean last) {
             // This one too
         }
+
+        @Override
+        public void clean() {
+            // And this
+        }
     }
 }

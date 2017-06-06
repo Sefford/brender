@@ -37,6 +37,11 @@ public interface Renderer<T> {
     void render(T renderable, int position, boolean first, boolean last);
 
     /**
+     * Releases ViewHolder resources
+     */
+    void clean();
+
+    /**
      * Unique ID of the Renderer
      *
      * @return Renderer ID

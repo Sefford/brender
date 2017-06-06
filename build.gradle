@@ -1,6 +1,6 @@
 ext {
     versionMajor = 2
-    versionMinor = 2
+    versionMinor = 4
     versionPatch = 0
     versionBuild = 0
 }
@@ -11,7 +11,7 @@ version = "${versionMajor}.${versionMinor}.${versionPatch}"
 description = 'brender'
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.4'
+    gradleVersion = '3.5'
 }
 
 

@@ -2,22 +2,25 @@ buildscript {
     repositories {
         mavenCentral()
         mavenLocal()
-        jcenter();
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'org.robolectric:robolectric-gradle-plugin:1.1.0'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
     }
 }
+
+plugins {
+    id "com.github.dcendents.android-maven" version "1.5"
+}
+
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 apply plugin: 'com.android.library'
-apply plugin: 'org.robolectric'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven-publish'
@@ -48,12 +51,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0-rc2"
 
     defaultConfig {
-        minSdkVersion 7
-        targetSdkVersion 22
+        minSdkVersion 9
+        targetSdkVersion 25
         versionCode rootProject.getProperties().versionMajor * 100000 + rootProject.getProperties().versionMinor * 1000 + rootProject.getProperties().versionPatch * 100 + rootProject.getProperties().versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
@@ -66,14 +69,14 @@ repositories {
 }
 
 dependencies {
-    compile 'com.sefford:brender-base:2.2.0'
-    compile 'com.sefford:commons:1.0.3'
+    compile 'com.sefford:brender-base:2.3.0'
+    compile 'com.sefford:commons:1.1.0'
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
-    compile 'com.android.support:recyclerview-v7:22.2.0'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-all:2.0.2-beta'
-    testCompile 'org.robolectric:robolectric:3.0'
+    testCompile 'org.mockito:mockito-core:2.3.7'
+    testCompile 'org.robolectric:robolectric:3.3'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

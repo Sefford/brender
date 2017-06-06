@@ -63,9 +63,27 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Renderer renderer = (Renderer) holder;
-        renderer.render(data.getItem(position), position, position == 0, position == getItemCount() - 1);
-        renderer.hookUpListeners(data.getItem(position));
+        // Do nothing, we do all the stuff of onViewAttachedToWindow
+    }
+
+    @Override
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        final int position = holder.getAdapterPosition();
+        ((Renderer) holder).render(data.getItem(position), position, position == 0, position == getItemCount() - 1);
+        ((Renderer) holder).hookUpListeners(data.getItem(position));
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        ((Renderer) holder).clean();
+    }
+
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        super.onViewRecycled(holder);
+        ((Renderer) holder).clean();
     }
 
     @Override
@@ -76,6 +94,10 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         return (int) data.getItemId(position);
+    }
+
+    public boolean isEmpty() {
+        return data == null || data.size() == 0;
     }
 
 

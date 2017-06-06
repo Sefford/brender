@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.sefford.brender.data.RecyclerAdapterData;
 import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
@@ -34,8 +35,16 @@ import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 /**
@@ -90,15 +99,6 @@ public class RecyclerRendererAdapterTest {
     }
 
     @Test
-    public void testOnBindViewHolder() throws Exception {
-        adapter.onBindViewHolder(renderer, 0);
-
-        InOrder order = inOrder(renderer);
-        order.verify(renderer, times(1)).render(renderable, 0, Boolean.TRUE, Boolean.TRUE);
-        order.verify(renderer, times(1)).hookUpListeners(renderable);
-    }
-
-    @Test
     public void testGetItemCount() throws Exception {
         assertEquals(EXPECTED_COUNT, adapter.getItemCount());
     }
@@ -115,6 +115,43 @@ public class RecyclerRendererAdapterTest {
         assertNotNull(adapter.getInflater(RuntimeEnvironment.application));
     }
 
+    @Test
+    public void testOnWindowAttached() {
+        adapter.onViewAttachedToWindow(renderer);
+
+        InOrder order = inOrder(renderer);
+        order.verify(renderer, times(1)).render(renderable, 0, Boolean.TRUE, Boolean.TRUE);
+        order.verify(renderer, times(1)).hookUpListeners(renderable);
+    }
+
+    @Test
+    public void testOnWindowDetached() {
+        adapter.onViewDetachedFromWindow(renderer);
+
+        verify(renderer, times(1)).clean();
+    }
+
+    @Test
+    public void testAdapterIsEmptyWithNullData() {
+        adapter = new RecyclerRendererAdapter(null, factory, postable);
+
+        assertTrue(adapter.isEmpty());
+    }
+
+    @Test
+    public void testAdapterIsEmptyWithEmptyData() {
+        when(data.size()).thenReturn(0);
+
+        assertTrue(adapter.isEmpty());
+    }
+
+    @Test
+    public void testAdapterIsEmptyWithNonEmptyData() {
+        when(data.size()).thenReturn(EXPECTED_COUNT);
+
+        assertFalse(adapter.isEmpty());
+    }
+
     private class TestRenderer extends RecyclerView.ViewHolder implements Renderer<Renderable> {
         public TestRenderer(View itemView) {
             super(itemView);
@@ -127,6 +164,11 @@ public class RecyclerRendererAdapterTest {
 
         @Override
         public void render(Renderable renderable, int position, boolean first, boolean last) {
+
+        }
+
+        @Override
+        public void clean() {
 
         }
 

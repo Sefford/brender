@@ -61,6 +61,12 @@ public class CursorAdapterDataTest {
         renderables.add(renderable);
         renderables.add(renderable);
         data = new CursorAdapterData(renderables) {
+
+            @Override
+            public void setExtras(Bundle extras) {
+
+            }
+
             @Override
             public int getViewTypeCount() {
                 return 0;

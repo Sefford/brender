@@ -26,6 +26,8 @@ import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
 import com.sefford.common.interfaces.Postable;
 
+import java.util.List;
+
 /**
  * Renderable adapter to mix several Renderable types for RecyclerView.
  *
@@ -59,6 +61,13 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter {
 
     protected LayoutInflater getInflater(Context context) {
         return LayoutInflater.from(context);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List payloads) {
+        if (payloads != null && !payloads.isEmpty()) {
+            ((Renderer) holder).refresh(data.getItem(position), payloads);
+        }
     }
 
     @Override

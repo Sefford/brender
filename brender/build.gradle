@@ -16,7 +16,6 @@ plugins {
     id "com.github.dcendents.android-maven" version "1.5"
 }
 
-
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
@@ -60,6 +59,11 @@ android {
         versionCode rootProject.getProperties().versionMajor * 100000 + rootProject.getProperties().versionMinor * 1000 + rootProject.getProperties().versionPatch * 100 + rootProject.getProperties().versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 repositories {
@@ -69,7 +73,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.sefford:brender-base:2.3.0'
+    compile 'com.sefford:brender-base:2.4.0'
     compile 'com.sefford:commons:1.1.0'
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
     compile 'com.android.support:recyclerview-v7:25.3.1'

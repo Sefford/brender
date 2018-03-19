@@ -3,10 +3,11 @@ buildscript {
         mavenCentral()
         mavenLocal()
         jcenter()
+        google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
     }
@@ -50,12 +51,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "26.0.0-rc2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
         versionCode rootProject.getProperties().versionMajor * 100000 + rootProject.getProperties().versionMinor * 1000 + rootProject.getProperties().versionPatch * 100 + rootProject.getProperties().versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
@@ -69,6 +70,7 @@ android {
 repositories {
     mavenCentral()
     mavenLocal()
+    google()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
@@ -76,11 +78,11 @@ dependencies {
     compile 'com.sefford:brender-base:2.4.0'
     compile 'com.sefford:commons:1.1.0'
     compile 'se.emilsjolander:stickylistheaders:2.5.2'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:27.1.0'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.3.7'
-    testCompile 'org.robolectric:robolectric:3.3'
+    testCompile 'org.mockito:mockito-core:2.16.0'
+    testCompile 'org.robolectric:robolectric:3.5.1'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'

@@ -24,6 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.util.List;
+
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -82,6 +84,11 @@ public class AbstractRendererTest {
         @Override
         public void render(Renderable renderable, int position, boolean first, boolean last) {
             // This one too
+        }
+
+        @Override
+        public void refresh(Renderable renderable, List payloads) {
+
         }
 
         @Override

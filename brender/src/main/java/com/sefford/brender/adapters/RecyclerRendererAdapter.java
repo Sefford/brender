@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 
 import com.sefford.brender.data.RecyclerAdapterData;
 import com.sefford.brender.interfaces.AdapterData;
+import com.sefford.brender.interfaces.Renderable;
 import com.sefford.brender.interfaces.Renderer;
 import com.sefford.brender.interfaces.RendererFactory;
 import com.sefford.common.interfaces.Postable;
@@ -107,6 +108,10 @@ public class RecyclerRendererAdapter extends RecyclerView.Adapter {
 
     public boolean isEmpty() {
         return data == null || data.size() == 0;
+    }
+
+    public Renderable getItemAt(int position) {
+        return data.getItem(position);
     }
 
 

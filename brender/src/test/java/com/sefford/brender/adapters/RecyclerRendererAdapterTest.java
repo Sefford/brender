@@ -31,8 +31,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -50,7 +52,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 /**
  * Created by sefford on 9/04/15.
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 public class RecyclerRendererAdapterTest {
 
     static final int EXPECTED_LAYOUT_ID = 0x87654321;
@@ -165,6 +167,11 @@ public class RecyclerRendererAdapterTest {
         @Override
         public void render(Renderable renderable, int position, boolean first, boolean last) {
 
+        }
+
+        @Override
+        public void refresh(Renderable renderable, List payloads) {
+            
         }
 
         @Override

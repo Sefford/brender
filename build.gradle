@@ -1,27 +1,80 @@
-ext {
-    versionMajor = 2
-    versionMinor = 4
-    versionPatch = 1
-    versionBuild = 0
+buildscript {
+    ext {
+        gradle_version = '4.7'
+        kotlin_version = '1.2.41'
+        gson_version = '2.8.2'
+        arrow_version = '0.7.1'
+        javaVersion = JavaVersion.VERSION_1_7
+    }
+
+    repositories {
+        maven { url 'https://maven.google.com' }
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha13'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'org.ajoberstar:gradle-git-publish:0.3.2'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+    }
 }
 
-group = 'com.sefford'
-version = "${versionMajor}.${versionMinor}.${versionPatch}"
+plugins {
+    id "io.gitlab.arturbosch.detekt" version "1.0.0.RC6-4"
+    id "org.sonarqube" version "2.6.2"
+}
 
-description = 'brender'
+detekt {
+    version = "1.0.0.RC6-4"
+    defaultProfile {
+        config = file("detekt-config.yml")
+        input = "$projectDir"
+        filters = ".*/resources/.*,.*/build/.*"
+        output = file("reports")
+        outputName = "detekt"
+        parallel = true
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        maven { url 'https://kotlin.bintray.com/kotlinx' }
+        maven { url "http://dl.bintray.com/kotlin/kotlin-dev" }
+        maven { url "http://dl.bintray.com/arrow-kt/arrow-kt" }
+        maven { url "https://dl.bintray.com/jetbrains/markdown/" }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.google.com' }
+    }
+
+    apply plugin: 'jacoco'
+
+    jacoco {
+        toolVersion '0.8.1'
+    }
+
+    task codeCoverageReport(type: JacocoReport) {
+        reports {
+            xml.enabled true
+            xml.destination file("${buildDir}/reports/jacoco/report.xml")
+            html.enabled true
+            csv.enabled false
+        }
+
+        classDirectories = fileTree(
+                dir: 'build/classes/kotlin/main',
+        )
+
+        sourceDirectories = files('src/main/kotlin')
+        executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    }
+}
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
-}
-
-
-
-
-repositories {
-    google()
-}
-buildscript {
-    repositories {
-        google()
-    }
+    distributionUrl = "https://services.gradle.org/distributions/gradle-${project.ext.gradle_version}-all.zip"
 }

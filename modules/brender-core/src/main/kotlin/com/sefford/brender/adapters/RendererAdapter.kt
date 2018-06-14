@@ -43,7 +43,7 @@ open class RendererAdapter
  * @param factory  Builder to instantiate the renderers
  * @param postable Bus to notify the UI of events on the renderers
  */
-(
+@JvmOverloads constructor(
         /**
          * Adapter data
          */
@@ -55,7 +55,11 @@ open class RendererAdapter
         /**
          * Bus to notify the UI of events on the renderers
          */
-        protected val postable: Postable) : BaseAdapter(), Filterable {
+        protected val postable: Postable,
+        /**
+         * Inflater creator to allow testing
+         */
+        protected val inflaterCreator: InflaterCreator = DefaultInflaterCreator) : BaseAdapter(), Filterable {
 
     override fun getCount(): Int {
         return data.size()
@@ -72,6 +76,7 @@ open class RendererAdapter
     override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
         var convertedView = convertView
         val renderable: Renderable = getItem(position)
+
         convertedView = configureRenderer(convertedView, parent, renderable.renderableId)
         val rendererInterface = convertedView.tag as Renderer<Any>
         rendererInterface.hookUpListeners(renderable)
@@ -87,17 +92,13 @@ open class RendererAdapter
                 "Factory is null")
         }
         return if (!isRecyclable(renderableId, convertView)) {
-            val convertedView = createInflater(parent.context).inflate(renderableId, parent, false)
+            val convertedView = inflaterCreator.createInflater(parent.context).inflate(renderableId, parent, false)
             val renderer = factory.getRenderer(renderableId, postable, convertedView)
             convertedView.tag = renderer
             convertedView
         } else {
             convertView
         }
-    }
-
-    fun createInflater(context: Context): LayoutInflater {
-        return LayoutInflater.from(context)
     }
 
     /**
@@ -154,4 +155,13 @@ open class RendererAdapter
         data.notifyDataSetChanged()
         super.notifyDataSetInvalidated()
     }
+
+    open class InflaterCreator {
+
+        fun createInflater(context: Context): LayoutInflater {
+            return LayoutInflater.from(context)
+        }
+    }
+
+    object DefaultInflaterCreator : InflaterCreator()
 }

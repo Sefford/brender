@@ -20,6 +20,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.LinearLayout
+import com.nhaarman.mockito_kotlin.*
 import com.sefford.brender.components.AdapterData
 import com.sefford.brender.components.Renderable
 import com.sefford.brender.components.Renderer
@@ -30,8 +32,8 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mock
-import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations.initMocks
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -39,7 +41,7 @@ import org.robolectric.RuntimeEnvironment
 /**
  * Renderer Adapter Tests
  *
- * @author Saul Diaz <sefford></sefford>@gmail.com>
+ * @author Saul Diaz <sefford@gmail.com>
  */
 @RunWith(RobolectricTestRunner::class)
 class RendererAdapterTest {
@@ -51,7 +53,7 @@ class RendererAdapterTest {
     @Mock
     lateinit var factory: RendererFactory
     @Mock
-    lateinit var renderer: Renderer<*>
+    lateinit var renderer: Renderer<Renderable>
     @Mock
     lateinit var view: View
     @Mock
@@ -59,33 +61,32 @@ class RendererAdapterTest {
     @Mock
     internal lateinit var renderable: RenderableTest
     @Mock
-    lateinit var extras: Any
-    @Mock
     lateinit var data: AdapterData
     @Mock
     lateinit var filter: Filter
     @Mock
     lateinit var inflater: LayoutInflater
+    @Mock
+    lateinit var inflaterCreator: RendererAdapter.InflaterCreator
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
         initMocks(this)
 
-        `when`(inflater.inflate(EXPECTED_RENDERABLE_ID, parent, java.lang.Boolean.FALSE)).thenReturn(view)
-        `when`(view.tag).thenReturn(renderer)
-        `when`(parent.context).thenReturn(RuntimeEnvironment.application)
+        whenever(inflater.inflate(EXPECTED_RENDERABLE_ID, parent, false)).thenReturn(view)
+        whenever(view.tag).thenReturn(renderer)
+        whenever(parent.context).thenReturn(RuntimeEnvironment.application)
+        whenever(data.size()).thenReturn(EXPECTED_COUNT)
+        whenever(data.getItem(anyInt())).thenReturn(renderable)
+        whenever(data.getItemId(anyInt())).thenReturn(EXPECTED_ITEM_ID)
+        whenever(data.filter).thenReturn(filter)
 
-        `when`(data.size()).thenReturn(EXPECTED_COUNT)
-        `when`(data.getItem(anyInt())).thenReturn(renderable)
-        `when`(data.getItemId(anyInt())).thenReturn(EXPECTED_ITEM_ID)
-        `when`(data.filter).thenReturn(filter)
+        whenever(renderable.renderableId).thenReturn(EXPECTED_RENDERABLE_ID)
+        whenever(renderer.id).thenReturn(EXPECTED_RENDERABLE_ID)
 
-        `when`(renderable.renderableId).thenReturn(EXPECTED_RENDERABLE_ID)
-        `when`(renderer.id).thenReturn(EXPECTED_RENDERABLE_ID)
-
-        adapter = spy(RendererAdapter(data, factory, postable))
-        doReturn(inflater).`when`(adapter).createInflater(RuntimeEnvironment.application)
+        adapter = RendererAdapter(data, factory, postable, inflaterCreator)
+        doReturn(inflater).`when`(inflaterCreator).createInflater(RuntimeEnvironment.application)
     }
 
     @Test
@@ -109,19 +110,24 @@ class RendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testGetViewOnlyOne() {
-        adapter.getView(0, view, parent)
+        val convertView = View(RuntimeEnvironment.application)
+        adapter.getView(0, convertView, parent)
+
         verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, view)
-        verify(renderer as Renderer<Any>, times(1)).hookUpListeners(renderable)
-        verify(renderer as Renderer<Any>, times(1)).render(renderable, 0, true, true)
+        verify(renderer, times(1)).hookUpListeners(renderable)
+        verify(renderer, times(1)).render(renderable, 0, true, true)
     }
 
     @Test
     @Throws(Exception::class)
     fun testGetViewNotTheOnlyOne() {
-        adapter.getView(3, view, parent)
+        val convertView = View(RuntimeEnvironment.application)
+
+        adapter.getView(3, convertView, parent)
+
         verify(factory, times(1)).getRenderer(EXPECTED_RENDERABLE_ID, postable, view)
-        verify(renderer  as Renderer<Any>, times(1)).hookUpListeners(renderable)
-        verify(renderer as Renderer<Any>, times(1)).render(renderable, 3, false, false)
+        verify(renderer, times(1)).hookUpListeners(renderable)
+        verify(renderer, times(1)).render(renderable, 3, false, false)
     }
 
     @Test
@@ -133,7 +139,7 @@ class RendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testGetFilterDataHasNoFilterConfigured() {
-        `when`(data.filter).thenReturn(null)
+        whenever(data.filter).thenReturn(null)
 
         assertEquals(NullFilter::class.java.canonicalName, adapter.filter.javaClass.canonicalName)
     }
@@ -152,14 +158,6 @@ class RendererAdapterTest {
 
     @Test
     @Throws(Exception::class)
-    fun testCreateInflater() {
-        doCallRealMethod().`when`(adapter).createInflater(RuntimeEnvironment.application)
-
-        assertNotNull(adapter.createInflater(RuntimeEnvironment.application))
-    }
-
-    @Test
-    @Throws(Exception::class)
     fun testIsRecyclableWithNullView() {
         assertFalse(adapter.isRecyclable(EXPECTED_RENDERABLE_ID, null))
     }
@@ -167,7 +165,7 @@ class RendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testIsRecyclableWithNullTag() {
-        `when`(view.tag).thenReturn(null)
+        whenever(view.tag).thenReturn(null)
 
         assertFalse(adapter.isRecyclable(EXPECTED_RENDERABLE_ID, view))
     }
@@ -175,7 +173,7 @@ class RendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testIsRecyclableWithDifferentIds() {
-        `when`(renderer.id).thenReturn(EXPECTED_RENDERABLE_ID + 10000)
+        whenever(renderer.id).thenReturn(EXPECTED_RENDERABLE_ID + 10000)
 
         assertFalse(adapter.isRecyclable(EXPECTED_RENDERABLE_ID, view))
     }
@@ -189,7 +187,9 @@ class RendererAdapterTest {
     @Test(expected = IllegalStateException::class)
     @Throws(Exception::class)
     fun testConfigureRendererInvalidID() {
-        doReturn(java.lang.Boolean.FALSE).`when`(adapter).isAdapterInitialized(0)
+        adapter = spy(adapter)
+
+        doReturn(java.lang.Boolean.FALSE).whenever(adapter).isAdapterInitialized(0)
 
         adapter.configureRenderer(view, parent, 0)
     }
@@ -203,14 +203,14 @@ class RendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testGetViewTypeCount() {
-        `when`(data.viewTypeCount).thenReturn(EXPECTED_VIEWTYPE_COUNT)
+        whenever(data.viewTypeCount).thenReturn(EXPECTED_VIEWTYPE_COUNT)
 
         assertEquals(EXPECTED_VIEWTYPE_COUNT.toLong(), adapter.viewTypeCount.toLong())
     }
 
     @Test
     fun testGetViewTypeCountWithNoData() {
-        `when`(data.viewTypeCount).thenReturn(0)
+        whenever(data.viewTypeCount).thenReturn(0)
 
         assertEquals(EXPECTED_DEFAULT_VIEWTYPE_COUNT.toLong(), adapter.viewTypeCount.toLong())
     }
@@ -220,7 +220,7 @@ class RendererAdapterTest {
     fun testNotifyDataSetChanged() {
         adapter.notifyDataSetChanged()
 
-        verify<AdapterData>(data, times(1)).notifyDataSetChanged()
+        verify(data, times(1)).notifyDataSetChanged()
     }
 
     @Test
@@ -228,7 +228,7 @@ class RendererAdapterTest {
     fun testNotifyDataSetInvalidated() {
         adapter.notifyDataSetInvalidated()
 
-        verify<AdapterData>(data, times(1)).notifyDataSetChanged()
+        verify(data, times(1)).notifyDataSetChanged()
     }
 
     internal inner class RenderableTest : Renderable {

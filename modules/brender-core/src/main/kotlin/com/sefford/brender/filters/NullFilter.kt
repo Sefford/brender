@@ -28,7 +28,7 @@ class NullFilter : Filter() {
         return null
     }
 
-    override fun publishResults(constraint: CharSequence, results: Filter.FilterResults) {
+    override fun publishResults(constraint: CharSequence, results: Filter.FilterResults?) {
         // Do nothing
     }
 }

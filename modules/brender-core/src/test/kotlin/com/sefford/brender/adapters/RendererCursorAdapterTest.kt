@@ -34,28 +34,28 @@ import org.mockito.MockitoAnnotations.initMocks
 @RunWith(RobolectricTestRunner::class)
 class RendererCursorAdapterTest {
 
-    internal var adapter: RendererCursorAdapter
+    lateinit var adapter: RendererCursorAdapter
 
     @Mock
-    internal var data: CursorAdapterData? = null
+    lateinit var data: CursorAdapterData
     @Mock
-    internal var renderable: Renderable? = null
+    lateinit var renderable: Renderable
     @Mock
-    internal var factory: RendererFactory? = null
+    lateinit var factory: RendererFactory
     @Mock
-    internal var renderer: Renderer<Renderable>? = null
+    lateinit var renderer: Renderer<Renderable>
     @Mock
-    internal var bus: Postable? = null
+    lateinit var bus: Postable
 
     @Before
     @Throws(Exception::class)
     fun setUp() {
         initMocks(this)
 
-        `when`(data!!.getItem(EXPECTED_POSITION)).thenReturn(renderable)
-        `when`(renderable!!.renderableId).thenReturn(EXPECTED_LAYOUT)
+        `when`(data.getItem(EXPECTED_POSITION)).thenReturn(renderable)
+        `when`(renderable.renderableId).thenReturn(EXPECTED_LAYOUT)
 
-        adapter = spy(RendererCursorAdapter(RuntimeEnvironment.application, data!!, 0, factory!!, bus!!))
+        adapter = spy(RendererCursorAdapter(RuntimeEnvironment.application, data, 0, factory, bus))
     }
 
     @Test
@@ -65,11 +65,11 @@ class RendererCursorAdapterTest {
         val inflater = mock(LayoutInflater::class.java)
         val view = mock(View::class.java)
         doReturn(inflater).`when`(adapter).getInflater(RuntimeEnvironment.application)
-        `when`(data!!.position).thenReturn(EXPECTED_POSITION)
+        `when`(data.position).thenReturn(EXPECTED_POSITION)
         `when`(inflater.inflate(EXPECTED_LAYOUT, container, false)).thenReturn(view)
-        `when`(factory!!.getRenderer(EXPECTED_LAYOUT, bus!!, view)).thenReturn(renderer)
+        `when`(factory.getRenderer(EXPECTED_LAYOUT, bus, view)).thenReturn(renderer)
 
-        assertEquals(view, adapter.newView(RuntimeEnvironment.application, data!!, container))
+        assertEquals(view, adapter.newView(RuntimeEnvironment.application, data, container))
         verify(view, times(1)).tag = renderer
     }
 
@@ -78,9 +78,9 @@ class RendererCursorAdapterTest {
     fun testBindView() {
         val view = mock(View::class.java)
         `when`(view.tag).thenReturn(renderer)
-        `when`(data!!.count).thenReturn(EXPECTED_COUNT)
+        `when`(data.count).thenReturn(EXPECTED_COUNT)
 
-        adapter.bindView(view, RuntimeEnvironment.application, data!!)
+        adapter.bindView(view, RuntimeEnvironment.application, data)
 
         val order = inOrder(renderer)
         order.verify<Renderer<Renderable>>(renderer, times(1)).render(renderable, EXPECTED_POSITION, java.lang.Boolean.TRUE, java.lang.Boolean.TRUE)
@@ -89,9 +89,9 @@ class RendererCursorAdapterTest {
 
     companion object {
 
-        internal val EXPECTED_POSITION = 0
-        internal val EXPECTED_LAYOUT = 0x1234
-        val EXPECTED_COUNT = 1
+        const internal val EXPECTED_POSITION = 0
+        const internal val EXPECTED_LAYOUT = 0x1234
+        const val EXPECTED_COUNT = 1
     }
 
 }

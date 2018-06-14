@@ -1,9 +1,9 @@
 buildscript {
     ext {
-        gradle_version = '4.7'
-        kotlin_version = '1.2.41'
+        gradle_version = '4.8'
+        kotlin_version = '1.2.50'
         gson_version = '2.8.2'
-        arrow_version = '0.7.1'
+        arrow_version = '0.7.2'
         javaVersion = JavaVersion.VERSION_1_7
     }
 
@@ -15,12 +15,13 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0-alpha13'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha18'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
         classpath 'org.ajoberstar:gradle-git-publish:0.3.2'
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.6.2"
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
     }
 }
 
@@ -50,12 +51,6 @@ allprojects {
         maven { url "https://dl.bintray.com/jetbrains/markdown/" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com' }
-    }
-
-    apply plugin: 'jacoco'
-
-    jacoco {
-        toolVersion '0.8.1'
     }
 
     task codeCoverageReport(type: JacocoReport) {

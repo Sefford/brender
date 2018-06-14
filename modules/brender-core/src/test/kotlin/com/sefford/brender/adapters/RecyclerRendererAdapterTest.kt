@@ -19,6 +19,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import com.sefford.brender.components.Renderable
 import com.sefford.brender.components.Renderer
 import com.sefford.brender.components.RendererFactory
@@ -64,12 +66,12 @@ class RecyclerRendererAdapterTest {
     fun setUp() {
         initMocks(this)
 
-        `when`(parent.context).thenReturn(RuntimeEnvironment.application)
-        `when`(inflater.inflate(EXPECTED_LAYOUT_ID, parent, java.lang.Boolean.FALSE)).thenReturn(view)
-        `when`(data.getItem(0)).thenReturn(renderable)
-        `when`(data.getItemId(0)).thenReturn(java.lang.Long.valueOf(EXPECTED_LAYOUT_ID.toLong()))
-        `when`(data.size()).thenReturn(EXPECTED_COUNT)
-        `when`(renderable.renderableId).thenReturn(EXPECTED_LAYOUT_ID)
+        whenever(parent.context).thenReturn(RuntimeEnvironment.application)
+        whenever(inflater.inflate(EXPECTED_LAYOUT_ID, parent, java.lang.Boolean.FALSE)).thenReturn(view)
+        whenever(data.getItem(0)).thenReturn(renderable)
+        whenever(data.getItemId(0)).thenReturn(java.lang.Long.valueOf(EXPECTED_LAYOUT_ID.toLong()))
+        whenever(data.size()).thenReturn(EXPECTED_COUNT)
+        whenever(renderable.renderableId).thenReturn(EXPECTED_LAYOUT_ID)
 
         adapter = spy(RecyclerRendererAdapter(data, factory, postable))
 
@@ -79,6 +81,7 @@ class RecyclerRendererAdapterTest {
     @Test
     @Throws(Exception::class)
     fun testOnCreateViewHolder() {
+        whenever(factory.getRenderer(EXPECTED_LAYOUT_ID, postable, view)).thenReturn(mock<TestRenderer>())
         adapter.onCreateViewHolder(parent, EXPECTED_LAYOUT_ID)
 
         verify<RendererFactory>(factory, times(1)).getRenderer(EXPECTED_LAYOUT_ID, postable, view)

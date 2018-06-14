@@ -15,7 +15,6 @@
  */
 package com.sefford.brender.filters
 
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,6 +37,7 @@ class NullFilterTest {
     @Test
     @Throws(Exception::class)
     fun testPerformFiltering() {
-        assertNull(filter.filter(""))
+        filter.filter("")
     }
+
 }

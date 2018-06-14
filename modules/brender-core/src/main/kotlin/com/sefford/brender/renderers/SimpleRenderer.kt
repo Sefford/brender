@@ -15,11 +15,9 @@
  */
 package com.sefford.brender.renderers
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
-
 import com.sefford.brender.components.Renderer
-import com.sefford.common.interfaces.Postable
+import android.support.v7.widget.RecyclerView
 
 
 /**
@@ -37,29 +35,25 @@ import com.sefford.common.interfaces.Postable
  *
  * @author Saul Diaz<sefford></sefford>@gmail.com>
  */
-abstract class AbstractRenderer<T : Any>
+class SimpleRenderer<T : Any>
 /**
  * Creates a new instance of a Renderer
  *
- * @param id       Building ID of the renderer
- * @param postable Postable interface to notify events to the UI
+ * @param view View of the Renderer
  */
-(
-        /**
-         * ID of the Renderer.
-         *
-         *
-         * This ID is supposed to be a valid R.layout.id of Android.
-         *
-         * @see com.sefford.brender.components.Renderable
-         */
-        /**
-         * Unique ID of the Renderer
-         *
-         * @return Renderer ID
-         */
-        override val id: Int,
-        /**
-         * Postable interface to notify events to the UI
-         */
-        val postable: Postable, view: View) : RecyclerView.ViewHolder(view), Renderer<T>
+(view: View) : RecyclerView.ViewHolder(view), Renderer<T> {
+    override val id: Int
+        get() = 0
+
+    override fun hookUpListeners(renderable: T) {
+    }
+
+    override fun render(renderable: T, position: Int, first: Boolean, last: Boolean) {
+    }
+
+    override fun refresh(renderable: T, payloads: List<*>) {
+    }
+
+    override fun clean() {
+    }
+}

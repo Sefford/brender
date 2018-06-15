@@ -18,6 +18,8 @@ package com.sefford.brender.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.support.v7.widget.RecyclerView
+
 import com.sefford.brender.components.Renderable
 import com.sefford.brender.components.Renderer
 import com.sefford.brender.components.RendererFactory

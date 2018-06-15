@@ -27,8 +27,8 @@ interface AdapterData : Filterable {
 
     /**
      * Returns the number different of classes of views contained inside the AdapterData.
-     * Due to Brenders architecture this is usually composed of the different [Renderable IDs][Renderable.getRenderableId]
-     * of the Renderables.
+     * Due to Brenders architecture this is usually composed of the
+     * different [Renderable IDs][Renderable.getRenderableId] of the Renderables.
      *
      * @return Number of different classes of views
      */

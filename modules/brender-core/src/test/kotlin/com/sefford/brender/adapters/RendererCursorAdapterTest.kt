@@ -89,9 +89,9 @@ class RendererCursorAdapterTest {
 
     companion object {
 
-        const internal val EXPECTED_POSITION = 0
-        const internal val EXPECTED_LAYOUT = 0x1234
-        const val EXPECTED_COUNT = 1
+        internal const val EXPECTED_POSITION = 0
+        internal const val EXPECTED_LAYOUT = 0x1234
+        internal const val EXPECTED_COUNT = 1
     }
 
 }

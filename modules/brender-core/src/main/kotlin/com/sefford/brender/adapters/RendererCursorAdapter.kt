@@ -17,10 +17,10 @@ package com.sefford.brender.adapters
 
 import android.content.Context
 import android.database.Cursor
-import android.support.v4.widget.CursorAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CursorAdapter
 import com.sefford.brender.components.AdapterData
 import com.sefford.brender.components.Renderer
 import com.sefford.brender.components.RendererFactory
@@ -58,15 +58,22 @@ class RendererCursorAdapter
  protected val bus: Postable) : CursorAdapter(context, c, flags) {
 
     override fun newView(context: Context, cursor: Cursor, parent: ViewGroup): View {
-        val view = getInflater(context).inflate((cursor as AdapterData).getItem(cursor.position).renderableId, parent, false)
-        view.tag = factory.getRenderer((cursor as AdapterData).getItem(cursor.position).renderableId, bus, view)
+        val view = getInflater(context).inflate(
+                (cursor as AdapterData).getItem(cursor.position).renderableId,
+                parent,
+                false)
+        view.tag = factory.getRenderer((cursor as AdapterData)
+                .getItem(cursor.position).renderableId, bus, view)
         return view
     }
 
     override fun bindView(view: View, context: Context, cursor: Cursor) {
         val renderer = view.tag as Renderer<Any>
         val position = cursor.position
-        renderer.render((cursor as AdapterData).getItem(position), position, position == 0, position == count - 1)
+        renderer.render((cursor as AdapterData).getItem(position),
+                position,
+                position == 0,
+                position == count - 1)
         renderer.hookUpListeners((cursor as AdapterData).getItem(position))
     }
 

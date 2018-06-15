@@ -16,7 +16,6 @@
 package com.sefford.brender.adapters
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.sefford.brender.components.Renderable
@@ -38,20 +37,24 @@ class RecyclerRendererAdapter(protected val data: RecyclerAdapterData,
                               /**
                                * Bus to notify the UI of events on the renderers
                                */
-                              protected val postable: Postable) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                              protected val postable: Postable)
+    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val isEmpty: Boolean
         get() = data.size() == 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return factory.getRenderer(viewType, postable, getInflater(parent.context).inflate(viewType, parent, false)) as RecyclerView.ViewHolder
+        return factory.getRenderer(viewType, postable, getInflater(parent.context)
+                .inflate(viewType, parent, false)) as RecyclerView.ViewHolder
     }
 
     fun getInflater(context: Context): LayoutInflater {
         return LayoutInflater.from(context)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: List<Any>) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder,
+                                  position: Int,
+                                  payloads: List<Any>) {
         if (!payloads.isEmpty()) {
             (holder as Renderer<Any>).refresh(data.getItem(position), payloads)
         }
@@ -64,7 +67,10 @@ class RecyclerRendererAdapter(protected val data: RecyclerAdapterData,
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
         val position = holder.adapterPosition
-        (holder as Renderer<Any>).render(data.getItem(position), position, position == 0, position == itemCount - 1)
+        (holder as Renderer<Any>).render(data.getItem(position),
+                position,
+                position == 0,
+                position == itemCount - 1)
         (holder as Renderer<Any>).hookUpListeners(data.getItem(position))
     }
 
@@ -89,6 +95,4 @@ class RecyclerRendererAdapter(protected val data: RecyclerAdapterData,
     fun getItemAt(position: Int): Renderable {
         return data.getItem(position)
     }
-
-
 }

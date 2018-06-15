@@ -81,7 +81,7 @@ class RecyclerAdapterDataTest {
 
     companion object {
 
-        internal val EXPECTED_RENDERABLE_ID = 0x12345678
-        internal val EXPECTED_SIZE = 1
+        internal const val EXPECTED_RENDERABLE_ID = 0x12345678
+        internal const val EXPECTED_SIZE = 1
     }
 }

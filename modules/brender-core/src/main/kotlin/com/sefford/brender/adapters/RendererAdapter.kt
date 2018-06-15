@@ -59,7 +59,8 @@ open class RendererAdapter
         /**
          * Inflater creator to allow testing
          */
-        protected val inflaterCreator: InflaterCreator = DefaultInflaterCreator) : BaseAdapter(), Filterable {
+        protected val inflaterCreator: InflaterCreator = DefaultInflaterCreator)
+    : BaseAdapter(), Filterable {
 
     override fun getCount(): Int {
         return data.size()
@@ -80,7 +81,10 @@ open class RendererAdapter
         convertedView = configureRenderer(convertedView, parent, renderable.renderableId)
         val rendererInterface = convertedView.tag as Renderer<Any>
         rendererInterface.hookUpListeners(renderable)
-        rendererInterface.render(renderable, position, position == 0, position == count - 1)
+        rendererInterface.render(renderable,
+                position,
+                position == 0,
+                position == count - 1)
         return convertedView
     }
 
@@ -92,7 +96,8 @@ open class RendererAdapter
                 "Factory is null")
         }
         return if (!isRecyclable(renderableId, convertView)) {
-            val convertedView = inflaterCreator.createInflater(parent.context).inflate(renderableId, parent, false)
+            val convertedView = inflaterCreator.createInflater(parent.context)
+                    .inflate(renderableId, parent, false)
             val renderer = factory.getRenderer(renderableId, postable, convertedView)
             convertedView.tag = renderer
             convertedView
@@ -123,15 +128,19 @@ open class RendererAdapter
      * Returns if the Adapter is correctly initialized.
      *
      *
-     * Only the ID of the renderer, the inflater and the factory are necessary for the Adapter to have a consistent state.
+     * Only the ID of the renderer, the inflater and the factory are necessary for the Adapter to
+     * have a consistent state.
      *
      *
-     * Many views do not require a ViewGroup straightforward and eventually is added to it during the flow of the view. Similarly,
-     * extras might not be required by your Renderers to work. In the case of Adapters, the initial view is null, therefore
-     * the Factory will consider the Renderer [not suitable to be recycled][.isRecyclable].
+     * Many views do not require a ViewGroup straightforward and eventually is added to it during
+     * the flow of the view. Similarly, extras might not be required by your Renderers to work.
+     *
+     * In the case of Adapters, the initial view is null, therefore the Factory will consider the
+     * Renderer [not suitable to be recycled][.isRecyclable].
      *
      * @param renderableId ID of the [Renderable]
-     * @return TRUE if renderable ID is not 0 and Layout Inflater not null and the Factory is not null, FALSE otherwise.
+     * @return TRUE if renderable ID is not 0 and Layout Inflater not null and the Factory
+     * is not null, FALSE otherwise.
      */
     fun isAdapterInitialized(renderableId: Int): Boolean {
         return renderableId > 0

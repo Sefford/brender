@@ -50,10 +50,14 @@ interface Renderer<T> {
      * @param renderable Renderable item to set the info from
      * @param payloads
      */
-    fun refresh(renderable: T, payloads: List<*>)
+    fun refresh(renderable: T, payloads: List<*>) {
+
+    }
 
     /**
      * Releases ViewHolder resources
      */
-    fun clean()
+    fun clean() {
+
+    }
 }

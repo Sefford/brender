@@ -68,6 +68,10 @@ allprojects {
         sourceDirectories = files('src/main/kotlin')
         executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
     }
+
+    tasks.withType(Javadoc) {
+        enabled = false
+    }
 }
 
 task wrapper(type: Wrapper) {
